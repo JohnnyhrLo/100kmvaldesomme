@@ -380,42 +380,48 @@ body.lang-en .legend .en-inline{display:inline !important}
 
       <div class="nutri-card card-green">
         <div class="cl-card-head">
-          <h4 style="margin:0">🏃 Coureur</h4>
-          <span class="cl-progress" id="cl-prog-coureur">0/16</span>
-          <button class="cl-reset" onclick="resetChecklist('coureur')">réinitialiser</button>
+          <h4 style="margin:0">🏃 Johnny — Général</h4>
+          <span class="cl-progress" id="cl-prog-johnny-general">0/8</span>
+          <button class="cl-reset" onclick="resetChecklist('johnny-general')">réinitialiser</button>
         </div>
-        <label class="cl-item"><input type="checkbox" data-cl="coureur:epingles" data-group="coureur" onchange="onChecklistToggle(this)"><span>Épingles à nourrice</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="coureur:taping" data-group="coureur" onchange="onChecklistToggle(this)"><span>Taping</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="coureur:crème" data-group="coureur" onchange="onChecklistToggle(this)"><span>Crème anti-frottement</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="coureur:compeed" data-group="coureur" onchange="onChecklistToggle(this)"><span>Compeed</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="coureur:chaussettes" data-group="coureur" onchange="onChecklistToggle(this)"><span>Chaussettes</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="coureur:chaussures" data-group="coureur" onchange="onChecklistToggle(this)"><span>Chaussures Adidas Evo SL Blanche</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="coureur:cuissard" data-group="coureur" onchange="onChecklistToggle(this)"><span>Cuissard Evadict</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="coureur:pantalon" data-group="coureur" onchange="onChecklistToggle(this)"><span>Pantalon par-dessus le cuissard (jusqu'au départ, à retirer juste avant)</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="coureur:softflask" data-group="coureur" onchange="onChecklistToggle(this)"><span>Soft flask 500 mL</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="coureur:frontale" data-group="coureur" onchange="onChecklistToggle(this)"><span>Frontale</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="coureur:gels" data-group="coureur" onchange="onChecklistToggle(this)"><span>Gel Nutripure LD — 7 au total pour la course (1 par gourde G0-G6)</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="coureur:poudre" data-group="coureur" onchange="onChecklistToggle(this)"><span>Poudre Decathlon 1:0.8 — 420 g au total (60 g × 7 gourdes)</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="coureur:veste" data-group="coureur" onchange="onChecklistToggle(this)"><span>Veste BV Sport</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="coureur:manchettes" data-group="coureur" onchange="onChecklistToggle(this)"><span>Manchettes</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="coureur:gants" data-group="coureur" onchange="onChecklistToggle(this)"><span>Gants</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="coureur:gelsreserve" data-group="coureur" onchange="onChecklistToggle(this)"><span>2 gels Nutripure LD supplémentaires (réserve)</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="johnny-general:epingles" data-group="johnny-general" onchange="onChecklistToggle(this)"><span>Épingles à nourrice</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="johnny-general:taping" data-group="johnny-general" onchange="onChecklistToggle(this)"><span>Taping</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="johnny-general:crème" data-group="johnny-general" onchange="onChecklistToggle(this)"><span>Crème anti-frottement</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="johnny-general:compeed" data-group="johnny-general" onchange="onChecklistToggle(this)"><span>Compeed</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="johnny-general:chaussettes" data-group="johnny-general" onchange="onChecklistToggle(this)"><span>Chaussettes</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="johnny-general:chaussures" data-group="johnny-general" onchange="onChecklistToggle(this)"><span>Chaussures Adidas Evo SL Blanche</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="johnny-general:cuissard" data-group="johnny-general" onchange="onChecklistToggle(this)"><span>Cuissard Evadict</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="johnny-general:pantalon" data-group="johnny-general" onchange="onChecklistToggle(this)"><span>Pantalon par-dessus le cuissard (jusqu'au départ, à retirer juste avant)</span></label>
+      </div>
+
+      <div class="nutri-card card-green">
+        <div class="cl-card-head">
+          <h4 style="margin:0">🏃 Johnny — Pendant la course</h4>
+          <span class="cl-progress" id="cl-prog-johnny-course">0/6</span>
+          <button class="cl-reset" onclick="resetChecklist('johnny-course')">réinitialiser</button>
+        </div>
+        <label class="cl-item"><input type="checkbox" data-cl="johnny-course:softflask" data-group="johnny-course" onchange="onChecklistToggle(this)"><span>Soft flask 500 mL avec 60 g de poudre</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="johnny-course:frontale" data-group="johnny-course" onchange="onChecklistToggle(this)"><span>Frontale</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="johnny-course:veste" data-group="johnny-course" onchange="onChecklistToggle(this)"><span>Veste BV Sport</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="johnny-course:manchettes" data-group="johnny-course" onchange="onChecklistToggle(this)"><span>Manchettes</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="johnny-course:gants" data-group="johnny-course" onchange="onChecklistToggle(this)"><span>Gants</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="johnny-course:gels" data-group="johnny-course" onchange="onChecklistToggle(this)"><span>2 gels Nutripure LD</span></label>
       </div>
 
       <div class="nutri-card card-purple">
         <div class="cl-card-head">
-          <h4 style="margin:0">🚴 Accompagnatrice</h4>
-          <span class="cl-progress" id="cl-prog-accompagnatrice">0/8</span>
-          <button class="cl-reset" onclick="resetChecklist('accompagnatrice')">réinitialiser</button>
+          <h4 style="margin:0">🚴 Harriet</h4>
+          <span class="cl-progress" id="cl-prog-harriet">0/8</span>
+          <button class="cl-reset" onclick="resetChecklist('harriet')">réinitialiser</button>
         </div>
-        <label class="cl-item"><input type="checkbox" data-cl="acc:portedossard" data-group="accompagnatrice" onchange="onChecklistToggle(this)"><span>Porte-dossard (dossard suiveur à fixer sur le vélo)</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="acc:poudredoses" data-group="accompagnatrice" onchange="onChecklistToggle(this)"><span>6 petits contenants pré-dosés à 60 g de poudre Decathlon 1:0.8 (G1 à G6)</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="acc:softflask1" data-group="accompagnatrice" onchange="onChecklistToggle(this)"><span>Soft flask n°1 (pour l'échange au ravito)</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="acc:softflask2" data-group="accompagnatrice" onchange="onChecklistToggle(this)"><span>Soft flask n°2 (de secours)</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="acc:gourdeapurna" data-group="accompagnatrice" onchange="onChecklistToggle(this)"><span>Gourde d'eau 750 mL avec Apurna</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="acc:apurnaspare" data-group="accompagnatrice" onchange="onChecklistToggle(this)"><span>2 sachets Apurna supplémentaires (réserve)</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="acc:gels" data-group="accompagnatrice" onchange="onChecklistToggle(this)"><span>6 gels Nutripure LD (pour les échanges G1 à G6)</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="acc:snack" data-group="accompagnatrice" onchange="onChecklistToggle(this)"><span>Snack pour elle</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="harriet:portedossard" data-group="harriet" onchange="onChecklistToggle(this)"><span>Porte-dossard (dossard suiveur à fixer sur le vélo)</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="harriet:poudredoses" data-group="harriet" onchange="onChecklistToggle(this)"><span>6 petits contenants pré-dosés à 60 g de poudre Decathlon 1:0.8 (G1 à G6)</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="harriet:softflask1" data-group="harriet" onchange="onChecklistToggle(this)"><span>Soft flask n°1 (pour l'échange au ravito)</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="harriet:softflask2" data-group="harriet" onchange="onChecklistToggle(this)"><span>Soft flask n°2 (de secours)</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="harriet:gourdeapurna" data-group="harriet" onchange="onChecklistToggle(this)"><span>Gourde d'eau 750 mL avec Apurna</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="harriet:apurnaspare" data-group="harriet" onchange="onChecklistToggle(this)"><span>2 sachets Apurna supplémentaires (réserve)</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="harriet:gels" data-group="harriet" onchange="onChecklistToggle(this)"><span>6 gels Nutripure LD (pour les échanges G1 à G6)</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="harriet:snack" data-group="harriet" onchange="onChecklistToggle(this)"><span>Snacc</span></label>
       </div>
 
       <div class="nutri-card card-grey">
@@ -555,42 +561,48 @@ body.lang-en .legend .en-inline{display:inline !important}
 
       <div class="nutri-card card-green">
         <div class="cl-card-head">
-          <h4 style="margin:0">🏃 Runner</h4>
-          <span class="cl-progress" id="cl-prog-en-coureur">0/16</span>
-          <button class="cl-reset" onclick="resetChecklist('en-coureur')">reset</button>
+          <h4 style="margin:0">🏃 Johnny — General</h4>
+          <span class="cl-progress" id="cl-prog-en-johnny-general">0/8</span>
+          <button class="cl-reset" onclick="resetChecklist('en-johnny-general')">reset</button>
         </div>
-        <label class="cl-item"><input type="checkbox" data-cl="en-coureur:epingles" data-group="en-coureur" onchange="onChecklistToggle(this)"><span>Safety pins</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-coureur:taping" data-group="en-coureur" onchange="onChecklistToggle(this)"><span>Taping</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-coureur:crème" data-group="en-coureur" onchange="onChecklistToggle(this)"><span>Anti-chafing cream</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-coureur:compeed" data-group="en-coureur" onchange="onChecklistToggle(this)"><span>Compeed (blister plasters)</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-coureur:chaussettes" data-group="en-coureur" onchange="onChecklistToggle(this)"><span>Socks</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-coureur:chaussures" data-group="en-coureur" onchange="onChecklistToggle(this)"><span>Adidas Evo SL White shoes</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-coureur:cuissard" data-group="en-coureur" onchange="onChecklistToggle(this)"><span>Evadict shorts</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-coureur:pantalon" data-group="en-coureur" onchange="onChecklistToggle(this)"><span>Pants over the shorts (worn until the start, removed right before)</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-coureur:softflask" data-group="en-coureur" onchange="onChecklistToggle(this)"><span>500 mL soft flask</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-coureur:frontale" data-group="en-coureur" onchange="onChecklistToggle(this)"><span>Headlamp</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-coureur:gels" data-group="en-coureur" onchange="onChecklistToggle(this)"><span>Nutripure LD gel — 7 total for the race (1 per bottle B0-B6)</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-coureur:poudre" data-group="en-coureur" onchange="onChecklistToggle(this)"><span>Decathlon 1:0.8 powder — 420 g total (60 g × 7 bottles)</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-coureur:veste" data-group="en-coureur" onchange="onChecklistToggle(this)"><span>BV Sport jacket</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-coureur:manchettes" data-group="en-coureur" onchange="onChecklistToggle(this)"><span>Arm warmers</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-coureur:gants" data-group="en-coureur" onchange="onChecklistToggle(this)"><span>Gloves</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-coureur:gelsreserve" data-group="en-coureur" onchange="onChecklistToggle(this)"><span>2 spare Nutripure LD gels (backup)</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-johnny-general:epingles" data-group="en-johnny-general" onchange="onChecklistToggle(this)"><span>Safety pins</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-johnny-general:taping" data-group="en-johnny-general" onchange="onChecklistToggle(this)"><span>Taping</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-johnny-general:crème" data-group="en-johnny-general" onchange="onChecklistToggle(this)"><span>Anti-chafing cream</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-johnny-general:compeed" data-group="en-johnny-general" onchange="onChecklistToggle(this)"><span>Compeed (blister plasters)</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-johnny-general:chaussettes" data-group="en-johnny-general" onchange="onChecklistToggle(this)"><span>Socks</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-johnny-general:chaussures" data-group="en-johnny-general" onchange="onChecklistToggle(this)"><span>Adidas Evo SL White shoes</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-johnny-general:cuissard" data-group="en-johnny-general" onchange="onChecklistToggle(this)"><span>Evadict shorts</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-johnny-general:pantalon" data-group="en-johnny-general" onchange="onChecklistToggle(this)"><span>Pants over the shorts (worn until the start, removed right before)</span></label>
+      </div>
+
+      <div class="nutri-card card-green">
+        <div class="cl-card-head">
+          <h4 style="margin:0">🏃 Johnny — During the race</h4>
+          <span class="cl-progress" id="cl-prog-en-johnny-course">0/6</span>
+          <button class="cl-reset" onclick="resetChecklist('en-johnny-course')">reset</button>
+        </div>
+        <label class="cl-item"><input type="checkbox" data-cl="en-johnny-course:softflask" data-group="en-johnny-course" onchange="onChecklistToggle(this)"><span>500 mL soft flask with 60 g powder</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-johnny-course:frontale" data-group="en-johnny-course" onchange="onChecklistToggle(this)"><span>Headlamp</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-johnny-course:veste" data-group="en-johnny-course" onchange="onChecklistToggle(this)"><span>BV Sport jacket</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-johnny-course:manchettes" data-group="en-johnny-course" onchange="onChecklistToggle(this)"><span>Arm warmers</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-johnny-course:gants" data-group="en-johnny-course" onchange="onChecklistToggle(this)"><span>Gloves</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-johnny-course:gels" data-group="en-johnny-course" onchange="onChecklistToggle(this)"><span>2 Nutripure LD gels</span></label>
       </div>
 
       <div class="nutri-card card-purple">
         <div class="cl-card-head">
-          <h4 style="margin:0">🚴 Follower</h4>
-          <span class="cl-progress" id="cl-prog-en-accompagnatrice">0/8</span>
-          <button class="cl-reset" onclick="resetChecklist('en-accompagnatrice')">reset</button>
+          <h4 style="margin:0">🚴 Harriet</h4>
+          <span class="cl-progress" id="cl-prog-en-harriet">0/8</span>
+          <button class="cl-reset" onclick="resetChecklist('en-harriet')">reset</button>
         </div>
-        <label class="cl-item"><input type="checkbox" data-cl="en-acc:portedossard" data-group="en-accompagnatrice" onchange="onChecklistToggle(this)"><span>Follower bib holder (for the bike)</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-acc:poudredoses" data-group="en-accompagnatrice" onchange="onChecklistToggle(this)"><span>6 pre-measured 60 g Decathlon 1:0.8 powder containers (B1 to B6)</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-acc:softflask1" data-group="en-accompagnatrice" onchange="onChecklistToggle(this)"><span>Soft flask #1 (for the aid station handoff)</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-acc:softflask2" data-group="en-accompagnatrice" onchange="onChecklistToggle(this)"><span>Soft flask #2 (spare)</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-acc:gourdeapurna" data-group="en-accompagnatrice" onchange="onChecklistToggle(this)"><span>750 mL water bottle with Apurna</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-acc:apurnaspare" data-group="en-accompagnatrice" onchange="onChecklistToggle(this)"><span>2 spare Apurna sachets</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-acc:gels" data-group="en-accompagnatrice" onchange="onChecklistToggle(this)"><span>6 Nutripure LD gels (for the B1-B6 handoffs)</span></label>
-        <label class="cl-item"><input type="checkbox" data-cl="en-acc:snack" data-group="en-accompagnatrice" onchange="onChecklistToggle(this)"><span>Snacks for herself</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-harriet:portedossard" data-group="en-harriet" onchange="onChecklistToggle(this)"><span>Follower bib holder (for the bike)</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-harriet:poudredoses" data-group="en-harriet" onchange="onChecklistToggle(this)"><span>6 pre-measured 60 g Decathlon 1:0.8 powder containers (B1 to B6)</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-harriet:softflask1" data-group="en-harriet" onchange="onChecklistToggle(this)"><span>Soft flask #1 (for the aid station handoff)</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-harriet:softflask2" data-group="en-harriet" onchange="onChecklistToggle(this)"><span>Soft flask #2 (spare)</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-harriet:gourdeapurna" data-group="en-harriet" onchange="onChecklistToggle(this)"><span>750 mL water bottle with Apurna</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-harriet:apurnaspare" data-group="en-harriet" onchange="onChecklistToggle(this)"><span>2 spare Apurna sachets</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-harriet:gels" data-group="en-harriet" onchange="onChecklistToggle(this)"><span>6 Nutripure LD gels (for the B1-B6 handoffs)</span></label>
+        <label class="cl-item"><input type="checkbox" data-cl="en-harriet:snack" data-group="en-harriet" onchange="onChecklistToggle(this)"><span>Snacc</span></label>
       </div>
 
       <div class="nutri-card card-grey">
@@ -1326,7 +1338,7 @@ function loadChecklist() {
       }
     });
   } catch(e) {}
-  ['coureur','accompagnatrice','rechange','en-coureur','en-accompagnatrice','en-rechange'].forEach(updateChecklistProgress);
+  ['johnny-general','johnny-course','harriet','rechange','en-johnny-general','en-johnny-course','en-harriet','en-rechange'].forEach(updateChecklistProgress);
 }
 
 // Load saved speeds on startup
