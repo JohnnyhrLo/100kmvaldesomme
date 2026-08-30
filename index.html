@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>100 km du Val de Somme — Planificateur</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;color:#1a1a1a;background:#f0f0f0;padding:16px}
+.card{background:#fff;border-radius:14px;box-shadow:0 1px 6px rgba(0,0,0,.1);overflow:hidden}
+.header-wrap{padding:18px 18px 12px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.header-left h1{font-size:20px;font-weight:600;margin-bottom:2px}
+.header-left .sub{font-size:12px;color:#888}
+.lang-toggle{display:flex;border:1px solid #ddd;border-radius:8px;overflow:hidden;flex-shrink:0}
+.lang-btn{padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;background:#fff;border:none;color:#888;transition:all .15s}
+.lang-btn.active{background:#1D9E75;color:#fff}
+.tabs{display:flex;gap:4px;border-bottom:1px solid #e5e5e5;padding:0 16px;flex-wrap:wrap}
+.tab{padding:10px 16px;border-radius:8px 8px 0 0;cursor:pointer;font-size:13px;font-weight:500;color:#777;border:1px solid transparent;border-bottom:none;background:transparent;transition:all .15s}
+.tab.active{background:#fff;border-color:#e5e5e5;color:#111;margin-bottom:-1px}
+.panel{display:none;padding:16px}.panel.active{display:block}
+label{font-size:12px;color:#777;display:block;margin-bottom:5px;margin-top:14px;font-weight:500}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:4px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
+.row4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+.metric{background:#f7f7f7;border-radius:8px;padding:12px 14px;border:1px solid #efefef}
+.metric .val{font-size:20px;font-weight:600;margin-top:4px;color:#111}
+.metric .lbl{font-size:11px;color:#999;font-weight:500}
+.metric.green{border-color:#c6ecd9;background:#f0faf5}.metric.green .val{color:#085041}
+.metric.orange{border-color:#f9dfc0;background:#fdf6ee}.metric.orange .val{color:#7a4010}
+.metric.blue{border-color:#c5d9f1;background:#eef4fb}.metric.blue .val{color:#0c447c}
+input[type=time],input[type=number],input[type=text]{width:100%;font-size:14px;border:1px solid #ddd;border-radius:7px;padding:6px 9px;background:#fff;color:#111;transition:border .15s}
+input:focus{outline:none;border-color:#1D9E75}
+input[type=range]{width:100%;margin:8px 0;accent-color:#1D9E75}
+.pace-wrap{display:flex;align-items:center;gap:6px}
+.pace-wrap input{width:44px;font-size:18px;font-weight:600;text-align:center;padding:5px 3px}
+.pace-wrap .sep{font-size:18px;font-weight:300;color:#aaa}
+.pace-wrap .unit{font-size:12px;color:#aaa;white-space:nowrap}
+.presets{display:flex;gap:6px;align-items:center;margin:10px 0 6px;flex-wrap:wrap}
+.preset-lbl{font-size:12px;color:#999;margin-right:2px}
+.preset-btn{font-size:12px;font-weight:500;padding:5px 12px;border-radius:7px;cursor:pointer;border:1px solid #ddd;background:#fff;color:#444;transition:all .15s}
+.preset-btn:hover{background:#f5f5f5;border-color:#bbb}
+.preset-btn.active-preset{background:#1D9E75;border-color:#1D9E75;color:#fff}
+.fade-info{font-size:12px;color:#666;background:#f7f7f7;border:1px solid #eaeaea;border-radius:7px;padding:8px 11px;margin:8px 0 4px;line-height:1.5}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
+th{font-size:11px;font-weight:600;color:#999;text-align:left;padding:7px 9px;border-bottom:1px solid #eee;background:#fafafa}
+td{padding:7px 9px;border-bottom:1px solid #f2f2f2}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafafa}
+.badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600}
+.b0{background:#f0f0f0;color:#555}.b1{background:#E1F5EE;color:#085041}.b2{background:#FAEEDA;color:#633806}.b3{background:#E6F1FB;color:#0C447C}
+.badge-cutoff{background:#FDE8E8;color:#B42318;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600}
+.badge-velo{background:#FFF3CD;color:#856404;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600}
+.crossover-row td{background:#F1F0FE}.crossover-row:hover td{background:#E9E7FD}
+.depart-row td{background:#f7f7f7;color:#666;font-style:italic}
+.cutoff-row td{background:#FFF8F7}
+.turn-row td{background:#FDF6ED;font-weight:500}
+.handoff-row td{background:#F1F0FE;font-weight:500}
+.tooltip-box{background:#fff;border:1px solid #ddd;border-radius:8px;padding:6px 11px;font-size:12px;position:absolute;top:-46px;transform:translateX(-50%);white-space:nowrap;pointer-events:none;box-shadow:0 2px 10px rgba(0,0,0,.1);font-weight:500}
+.section-title{font-size:15px;font-weight:600;margin:20px 0 8px;color:#111}
+.nutri-card{border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid #efefef}
+.nutri-card.card-green{background:#f0faf5;border-color:#c6ecd9}
+.nutri-card.card-orange{background:#fdf6ee;border-color:#f9dfc0}
+.nutri-card.card-blue{background:#eef4fb;border-color:#c5d9f1}
+.nutri-card.card-grey{background:#f7f7f7;border-color:#e5e5e5}
+.nutri-card.card-purple{background:#F4F2FE;border-color:#C8C0F8}
+.nutri-card h4{font-size:13px;font-weight:600;margin-bottom:10px}
+.nutri-row{display:flex;justify-content:space-between;align-items:flex-start;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.06);font-size:12px;gap:12px}
+.nutri-row:last-child{border:none}
+.nutri-row .val{font-weight:600;color:#333;white-space:nowrap;text-align:right}
+.nutri-row .lbl{color:#555;flex:1}
+.boucle-card{background:#fff;border:1.5px solid #1D9E75;border-radius:10px;padding:14px;margin-bottom:10px}
+.boucle-card h4{font-size:13px;font-weight:600;color:#085041;margin-bottom:10px}
+.boucle-item{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid #e8f5ee;font-size:12px}
+.boucle-item:last-child{border:none}
+.pill{background:#1D9E75;color:white;border-radius:5px;padding:2px 8px;font-size:10px;font-weight:600;white-space:nowrap;margin-top:1px;flex-shrink:0}
+.pill.orange{background:#EF9F27}.pill.grey{background:#888}.pill.purple{background:#7F77DD}.pill.red{background:#B42318}
+.warning-box{background:#FFF8E6;border:1px solid #f9dfc0;border-radius:8px;padding:10px 12px;font-size:12px;color:#7a4010;line-height:1.6;margin-top:8px}
+.info-box{background:#eef4fb;border:1px solid #c5d9f1;border-radius:8px;padding:10px 12px;font-size:12px;color:#0c447c;line-height:1.6;margin-top:8px}
+.gpx-note{background:#F4F2FE;border:1px solid #C8C0F8;border-radius:8px;padding:10px 12px;font-size:12px;color:#4A3F9C;line-height:1.6;margin-bottom:10px}
+#parcours-map{height:340px;border-radius:10px;overflow:hidden;border:1px solid #e5e5e5;margin-bottom:14px}
+.map-controls{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;align-items:center}
+.map-ctrl-btn{font-size:11px;font-weight:500;padding:4px 10px;border-radius:14px;cursor:pointer;border:1.5px solid;background:#fff;transition:all .15s}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;margin:10px 0 6px;align-items:center;color:#666}
+.legend span{display:flex;align-items:center;gap:5px}
+/* Hide/show language content */
+.fr{display:block}.en{display:none}
+body.lang-en .fr{display:none}
+body.lang-en .en{display:block}
+body.lang-en .fr-inline{display:none}
+body.lang-en .en-inline{display:inline}
+.en-inline{display:none !important}
+.fr-inline{display:inline !important}
+body.lang-en .fr-inline{display:none !important}
+body.lang-en .en-inline{display:inline !important}
+.suivi-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:0}
+.speed-input{width:62px;font-size:13px;border:1px solid #ddd;border-radius:5px;padding:3px 6px;text-align:center;background:#fff}
+.speed-input:focus{outline:none;border-color:#1D9E75;background:#f0faf5}
+.finish-banner{background:#f0faf5;border:1.5px solid #1D9E75;border-radius:10px;padding:14px;margin-bottom:14px;display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.finish-banner .fb-item{text-align:center;flex:1;min-width:100px}
+.finish-banner .fb-val{font-size:22px;font-weight:700;color:#085041}
+.finish-banner .fb-lbl{font-size:11px;color:#888;margin-top:2px}
+.suivi-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;margin:10px 0;color:#666;align-items:center}
+.suivi-legend span{display:flex;align-items:center;gap:5px}
+.legend .fr-inline,.legend .en-inline{display:none !important}
+.legend .fr-inline{display:inline !important}
+body.lang-en .legend .fr-inline{display:none !important}
+body.lang-en .legend .en-inline{display:inline !important}
+.infos-table td:first-child{font-weight:600;color:#555;white-space:nowrap;width:1%}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header-wrap">
+    <div class="header-left">
+      <h1>100 km du Val de Somme</h1>
+      <div class="sub fr">3 octobre 2026 · Départ 06h30 · Amiens (Parc du Grand Marais) · Aller-retour · Ravitos ~tous les 5 km</div>
+      <div class="sub en">3 October 2026 · Start 06:30 · Amiens (Parc du Grand Marais) · Out-and-back · Aid stations ~every 5 km</div>
+    </div>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('fr',this)">🇫🇷 FR</button>
+      <button class="lang-btn" onclick="setLang('en',this)">🇬🇧 EN</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('chrono',event)">
+      <span class="fr-inline">⏱ Chrono</span><span class="en-inline">⏱ Pace</span>
+    </button>
+    <button class="tab" onclick="showTab('carte',event)">
+      <span class="fr-inline">🗺 Carte</span><span class="en-inline">🗺 Map</span>
+    </button>
+    <button class="tab" onclick="showTab('nutrition',event)">
+      <span class="fr-inline">🍌 Nutrition</span><span class="en-inline">🍌 Nutrition</span>
+    </button>
+    <button class="tab" onclick="showTab('suivi',event)">
+      <span class="fr-inline">📡 Suivi live</span><span class="en-inline">📡 Live tracking</span>
+    </button>
+    <button class="tab" onclick="showTab('infos',event)">
+      <span class="fr-inline">ℹ️ Infos course</span><span class="en-inline">ℹ️ Race info</span>
+    </button>
+  </div>
+
+  <!-- CHRONO / PACE -->
+  <div id="tab-chrono" class="panel active">
+    <div class="row2">
+      <div>
+        <label><span class="fr-inline">Heure de départ</span><span class="en-inline">Start time</span></label>
+        <input type="time" id="start-time" value="06:30">
+      </div>
+      <div>
+        <label><span class="fr-inline">Allure (min:sec / km)</span><span class="en-inline">Pace (min:sec / km)</span></label>
+        <div class="pace-wrap">
+          <input type="text" id="pace-min" value="4" maxlength="2">
+          <span class="sep">:</span>
+          <input type="text" id="pace-sec" value="45" maxlength="2">
+          <span class="unit">/km</span>
+        </div>
+      </div>
+    </div>
+    <div class="row2">
+      <div>
+        <label><span class="fr-inline">Ralentissement (%)</span><span class="en-inline">Slowdown (%)</span></label>
+        <input type="number" id="fade" min="0" max="30" step="1" value="0">
+      </div>
+      <div>
+        <label><span class="fr-inline">Début ralentissement (km)</span><span class="en-inline">Slowdown starts at (km)</span></label>
+        <input type="number" id="fade-start" min="0" max="90" step="1" value="60">
+      </div>
+    </div>
+    <div class="presets">
+      <span class="preset-lbl">Preset :</span>
+      <button class="preset-btn" onclick="setPreset(4,30)">4:30</button>
+      <button class="preset-btn" onclick="setPreset(4,35)">4:35</button>
+      <button class="preset-btn" onclick="setPreset(4,40)">4:40</button>
+      <button class="preset-btn active-preset" onclick="setPreset(4,45)">4:45</button>
+      <button class="preset-btn" onclick="setPreset(4,50)">4:50</button>
+      <button class="preset-btn" onclick="setPreset(5,0)">5:00</button>
+    </div>
+    <div id="fade-info" class="fade-info" style="display:none"></div>
+    <div class="row3" style="margin-top:12px">
+      <div class="metric">
+        <div class="lbl"><span class="fr-inline">Temps estimé</span><span class="en-inline">Estimated time</span></div>
+        <div class="val" id="s-time">-</div>
+      </div>
+      <div class="metric">
+        <div class="lbl"><span class="fr-inline">Allure effective moy.</span><span class="en-inline">Avg effective pace</span></div>
+        <div class="val" id="s-pace">-</div>
+      </div>
+      <div class="metric">
+        <div class="lbl"><span class="fr-inline">Arrivée prévue</span><span class="en-inline">Estimated finish</span></div>
+        <div class="val" id="s-finish">-</div>
+      </div>
+    </div>
+    <div class="info-box">⏱ <span class="fr-inline"><strong>Temps limite officiel : 15h</strong> (arrivée au plus tard à 21h30). Barrières horaires : km 14 avant 8h30 · km 35 avant 12h00 · km 56 avant 15h00 · km 77 avant 18h00.</span><span class="en-inline"><strong>Official time limit: 15h</strong> (finish by 21:30 at the latest). Cutoffs: km 14 before 08:30 · km 35 before 12:00 · km 56 before 15:00 · km 77 before 18:00.</span></div>
+    <table>
+      <thead>
+        <tr>
+          <th><span class="fr-inline">Point</span><span class="en-inline">Checkpoint</span></th>
+          <th>Km</th>
+          <th><span class="fr-inline">Temps cumulé</span><span class="en-inline">Elapsed time</span></th>
+          <th><span class="fr-inline">Heure passage</span><span class="en-inline">Est. time</span></th>
+          <th><span class="fr-inline">Allure locale</span><span class="en-inline">Seg. pace</span></th>
+          <th><span class="fr-inline">Barrière</span><span class="en-inline">Cutoff</span></th>
+        </tr>
+      </thead>
+      <tbody id="passage-body"></tbody>
+    </table>
+  </div>
+
+  <!-- CARTE / MAP -->
+  <div id="tab-carte" class="panel">
+    <div class="gpx-note">
+      <span class="fr-inline">🗺 Tracé GPX officiel (OpenRunner) — parcours aller-retour Amiens ↔ Épagnette, mesuré à 100,0 km. Les points de ravitaillement affichés sont des estimations tous les ~5 km, à confirmer avec le plan définitif de l'organisation.</span>
+      <span class="en-inline">🗺 Official GPX track (OpenRunner) — out-and-back course Amiens ↔ Épagnette, measured at 100.0 km. Aid station markers shown are estimates every ~5 km, to confirm against the organizer's final plan.</span>
+    </div>
+    <div id="parcours-map"></div>
+    <label style="margin-top:4px"><span class="fr-inline">Votre position sur le parcours</span><span class="en-inline">Your position on the course</span></label>
+    <div style="position:relative;margin:20px 0 4px">
+      <div id="tooltip-km" class="tooltip-box" style="left:0%">km 0</div>
+      <input type="range" id="km-slider" min="0" max="100" step="0.1" value="0" oninput="updateSlider()">
+    </div>
+    <div class="row3" style="margin-top:8px">
+      <div class="metric"><div class="lbl"><span class="fr-inline">Position</span><span class="en-inline">Position</span></div><div class="val" id="sl-km">km 0</div></div>
+      <div class="metric"><div class="lbl"><span class="fr-inline">Heure estimée</span><span class="en-inline">Est. time</span></div><div class="val" id="sl-time">-</div></div>
+      <div class="metric"><div class="lbl"><span class="fr-inline">Prochain point</span><span class="en-inline">Next checkpoint</span></div><div class="val" id="sl-next" style="font-size:12px;margin-top:6px">-</div></div>
+    </div>
+    <div class="legend" style="margin-top:12px">
+      <span><span style="display:inline-block;width:18px;height:3px;background:#1D9E75;border-radius:2px"></span><span class="fr-inline">Parcours (aller + retour)</span><span class="en-inline">Course (out + back)</span></span>
+      <span><svg width="11" height="11" viewBox="0 0 11 11"><polygon points="5.5,0.5 10.5,10.5 0.5,10.5" fill="#7F77DD"/></svg><span class="fr-inline">Échange gourde (suiveur)</span><span class="en-inline">Bottle handoff (cyclist)</span></span>
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#EF9F27;border:2px solid white;box-shadow:0 0 0 1px #EF9F27"></span><span class="fr-inline">Demi-tour Épagnette</span><span class="en-inline">Épagnette turnaround</span></span>
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#e63946;border:2px solid white;box-shadow:0 0 0 1px #e63946"></span><span class="fr-inline">Votre position</span><span class="en-inline">Your position</span></span>
+    </div>
+    <table style="margin-top:12px">
+      <thead>
+        <tr>
+          <th><span class="fr-inline">Point</span><span class="en-inline">Checkpoint</span></th>
+          <th>Km</th>
+          <th><span class="fr-inline">Type</span><span class="en-inline">Type</span></th>
+          <th><span class="fr-inline">Heure</span><span class="en-inline">Time</span></th>
+          <th>Δ <span class="fr-inline">préc.</span><span class="en-inline">prev.</span></th>
+        </tr>
+      </thead>
+      <tbody id="map-body"></tbody>
+    </table>
+  </div>
+
+  <!-- NUTRITION -->
+  <div id="tab-nutrition" class="panel">
+
+    <!-- FR nutrition content -->
+    <div class="fr">
+      <div class="section-title">📊 Bilan nutritionnel course</div>
+      <div class="row4">
+        <div class="metric green"><div class="lbl">Glucides totaux</div><div class="val">~440 g</div></div>
+        <div class="metric orange"><div class="lbl">Apport calorique</div><div class="val">~1 750 kcal</div></div>
+        <div class="metric blue"><div class="lbl">Sodium total</div><div class="val">~4,3 g</div></div>
+        <div class="metric"><div class="lbl">Eau (gourdes seules)</div><div class="val">2,5 L</div></div>
+      </div>
+      <div class="row3">
+        <div class="metric green"><div class="lbl">Glucides / heure</div><div class="val">~56 g/h</div></div>
+        <div class="metric blue"><div class="lbl">Sodium / heure</div><div class="val">~540 mg/h</div></div>
+        <div class="metric"><div class="lbl">Magnésium / heure</div><div class="val">~135 mg/h</div></div>
+      </div>
+      <div class="info-box">🌙 <strong>Départ avant le lever du jour</strong> — Départ <span id="nutri-start-fr">06h30</span>, arrivée estimée ~<strong><span id="nutri-finish-fr">—</span></strong>. Le taux de glucides ci-dessus (base gourdes + gels) est un plancher : complète avec ton <strong>ravitaillement personnel</strong> (bacs déposés le vendredi à chaque point) ou la nourriture de l'organisation pour te rapprocher de 70-90 g/h si besoin.</div>
+
+      <div class="section-title">🚲 Logistique — Suiveur vélo</div>
+      <div class="nutri-card card-purple">
+        <h4>Points de rendez-vous pour ton suiveur</h4>
+        <div class="nutri-row"><span class="lbl"><strong>km 16</strong> — Autorisation officielle</span><span class="val">Le suiveur peut rejoindre le parcours à vélo · pas d'échange avant</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 20</strong> — Ravito 4 🔀</span><span class="val">Remettre G1 + gel · récupérer G0 vide</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 40</strong> — Ravito 8 🔀</span><span class="val">Remettre G2 + gel · récupérer G1 vide</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 60</strong> — Ravito 11 🔀</span><span class="val">Remettre G3 + gel · récupérer G2 vide</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 80</strong> — Ravito 15 🔀</span><span class="val">Remettre G4 (dernière) + gel · récupérer G3 vide</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 100</strong> — Arrivée 🏁</span><span class="val">Récupérer G4 vide 🎉</span></div>
+        <div style="margin-top:8px;font-size:11px;color:#666;line-height:1.6">⚠️ Un seul vélo sur le circuit à la fois (relais possible entre plusieurs suiveurs). Casque recommandé, téléphone conseillé. Ne pas abriter le coureur. Accès aux zones de ravito réservé aux suiveurs accrédités (dossard suiveur obligatoire).</div>
+      </div>
+
+      <div class="section-title">🎒 Gourdes à préparer (la veille)</div>
+      <div class="nutri-card card-grey">
+        <h4>5 gourdes identiques numérotées G0 à G4</h4>
+        <div class="nutri-row"><span class="lbl">Eau</span><span class="val">500 mL (ajouter le matin)</span></div>
+        <div class="nutri-row"><span class="lbl">Decathlon 1:0.8 Drink</span><span class="val">60 g (poudre)</span></div>
+        <div class="nutri-row"><span class="lbl">Électrolytes</span><span class="val">1 sachet Apurna neutre</span></div>
+        <div class="nutri-row"><span class="lbl">Gel (remis séparément)</span><span class="val">1 gel Nutripure Longue Distance</span></div>
+        <div style="margin-top:8px;font-size:12px;color:#666;line-height:1.6">💡 Préparer la poudre Decathlon 1:0.8 + sachet Apurna le vendredi. Ajouter l'eau fraîche le matin. Étiqueter G0 à G4 dans l'ordre. G0 est à prendre soi-même au départ (le suiveur ne rejoint qu'au km 16).</div>
+      </div>
+
+      <div class="section-title">🔄 Plan par segment (20 km)</div>
+      <div class="boucle-card" style="border-color:#888">
+        <h4 style="color:#555">🌙 Segment 0 — Départ dans la nuit — km 0 → 20</h4>
+        <div class="boucle-item"><span class="pill">G0</span><span>Prendre gourde G0 au départ · boire progressivement par petites gorgées</span></div>
+        <div class="boucle-item"><span class="pill orange">Gel</span><span>1 gel Nutripure LD · avaler progressivement sur 10-15 min en début de segment</span></div>
+        <div class="boucle-item"><span class="pill red">🔦 Frontale</span><span>Obligatoire — chemin de halage non éclairé avant le lever du jour (~8h00-8h15)</span></div>
+      </div>
+      <div class="boucle-card">
+        <h4>➡️ Segment 1 (aller) — km 20 → 40</h4>
+        <div class="boucle-item"><span class="pill purple">🔀 Échange</span><span><strong>Ravito 4 (km 20)</strong> — récupérer G1 + gel auprès du suiveur</span></div>
+        <div class="boucle-item"><span class="pill">G1</span><span>Boire progressivement sur le segment</span></div>
+        <div class="boucle-item"><span class="pill orange">Gel</span><span>1 gel Nutripure LD · en début de segment · jour levé, ranger la frontale</span></div>
+      </div>
+      <div class="boucle-card" style="border-color:#EF9F27">
+        <h4 style="color:#7a4010">🔁 Segment 2 (aller + demi-tour) — km 40 → 60</h4>
+        <div class="boucle-item"><span class="pill purple">🔀 Échange</span><span><strong>Ravito 8 (km 40)</strong> — récupérer G2 + gel</span></div>
+        <div class="boucle-item"><span class="pill orange">G2</span><span>Boire progressivement · passage du contrôle horaire km 56 (avant 15h00) puis demi-tour à Épagnette (km ~57)</span></div>
+        <div class="boucle-item"><span class="pill orange">Gel</span><span>1 gel Nutripure LD</span></div>
+      </div>
+      <div class="boucle-card">
+        <h4>⬅️ Segment 3 (retour) — km 60 → 80</h4>
+        <div class="boucle-item"><span class="pill purple">🔀 Échange</span><span><strong>Ravito 11 (km 60)</strong> — récupérer G3 + gel</span></div>
+        <div class="boucle-item"><span class="pill">G3</span><span>Boire progressivement · maintenir même si appétit réduit</span></div>
+        <div class="boucle-item"><span class="pill orange">Gel</span><span>1 gel Nutripure LD</span></div>
+      </div>
+      <div class="boucle-card" style="border-color:#EF9F27">
+        <h4 style="color:#7a4010">⬅️ Segment 4 (retour, dernier) — km 80 → 100</h4>
+        <div class="boucle-item"><span class="pill purple">🔀 Échange</span><span><strong>Ravito 15 (km 80)</strong> — récupérer G4 (dernière gourde) + gel · plus que 20 km !</span></div>
+        <div class="boucle-item"><span class="pill orange">G4</span><span>Boire jusqu'à l'arrivée · maintenir les glucides coûte que coûte</span></div>
+        <div class="boucle-item"><span class="pill orange">Gel</span><span>Dernier gel de la course</span></div>
+      </div>
+
+      <div class="section-title">🧪 Composition d'une gourde</div>
+      <div class="nutri-card card-grey">
+        <h4>Par gourde 500 mL — apport par segment (~1h35 à 4:45/km)</h4>
+        <div class="nutri-row"><span class="lbl">60 g Decathlon 1:0.8 Drink</span><span class="val">58 g glucides · ~230 kcal · 300 mg Na · 34 mg Mg</span></div>
+        <div class="nutri-row"><span class="lbl">1 sachet Apurna neutre</span><span class="val">500 mg Na · 500 mg K · 180 mg Mg</span></div>
+        <div class="nutri-row"><span class="lbl">1 gel Nutripure LD (séparé)</span><span class="val">30 g glucides · 120 kcal · 53 mg Na</span></div>
+        <div class="nutri-row" style="border-top:2px solid #1D9E75;margin-top:4px;padding-top:8px;font-weight:700;color:#085041">
+          <span class="lbl">Total par segment</span><span class="val">~88 g glucides · ~350 kcal · 853 mg Na</span>
+        </div>
+      </div>
+
+      <div class="section-title">🔦 Nuit, lumière &amp; fraîcheur</div>
+      <div class="nutri-card card-orange">
+        <h4>Départ avant le jour — évolution estimée (météo à vérifier avant course)</h4>
+        <div class="nutri-row"><span class="lbl">06h30 (départ, nuit)</span><span class="val">~8-10°C · lampe frontale obligatoire</span></div>
+        <div class="nutri-row"><span class="lbl">~08h00-08h15 (lever du jour)</span><span class="val">~10-12°C · on peut ranger la frontale</span></div>
+        <div class="nutri-row"><span class="lbl">Milieu de journée (vers le demi-tour)</span><span class="val">~14-17°C · le plus confortable</span></div>
+        <div class="nutri-row"><span class="lbl">Fin d'après-midi (retour)</span><span class="val">~13-15°C · fraîchissement possible, prévoir une couche légère</span></div>
+      </div>
+      <div class="warning-box">⚠️ <strong>Chemin de halage non éclairé</strong> — la frontale est indispensable tant que le jour n'est pas levé. Les coureurs de plus de 12h de course (et leur suiveur) doivent aussi prévoir une frontale pour la fin du parcours (nuit qui retombe). Règle d'or : ne rien tester de nouveau le jour J, valider ce plan sur une sortie longue avant la course.</div>
+
+      <div class="section-title">🗓 Tableau de bord par point de passage</div>
+      <table>
+        <thead><tr><th>Point</th><th>Km</th><th>Heure</th><th>Action</th></tr></thead>
+        <tbody id="nutri-body-fr"></tbody>
+      </table>
+    </div>
+
+    <!-- EN nutrition content -->
+    <div class="en">
+      <div class="section-title">📊 Race nutrition summary</div>
+      <div class="row4">
+        <div class="metric green"><div class="lbl">Total carbs</div><div class="val">~440 g</div></div>
+        <div class="metric orange"><div class="lbl">Caloric intake</div><div class="val">~1,750 kcal</div></div>
+        <div class="metric blue"><div class="lbl">Total sodium</div><div class="val">~4.3 g</div></div>
+        <div class="metric"><div class="lbl">Water (bottles only)</div><div class="val">2.5 L</div></div>
+      </div>
+      <div class="row3">
+        <div class="metric green"><div class="lbl">Carbs / hour</div><div class="val">~56 g/h</div></div>
+        <div class="metric blue"><div class="lbl">Sodium / hour</div><div class="val">~540 mg/h</div></div>
+        <div class="metric"><div class="lbl">Magnesium / hour</div><div class="val">~135 mg/h</div></div>
+      </div>
+      <div class="info-box">🌙 <strong>Start before sunrise</strong> — Start <span id="nutri-start-en">06:30</span>, estimated finish ~<strong><span id="nutri-finish-en">—</span></strong>. The carb rate above (bottles + gels only) is a floor: top it up with your <strong>personal aid ("ravitaillement personnel")</strong> bins dropped off on Friday, or organizer food, to get closer to 70-90 g/h if needed.</div>
+
+      <div class="section-title">🚲 Logistics — Cycling follower ("suiveur")</div>
+      <div class="nutri-card card-purple">
+        <h4>Meeting points for your follower</h4>
+        <div class="nutri-row"><span class="lbl"><strong>km 16</strong> — Official start point</span><span class="val">Follower may join the course by bike · no exchange before this</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 20</strong> — Aid station 4 🔀</span><span class="val">Hand over B1 + gel · collect empty B0</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 40</strong> — Aid station 8 🔀</span><span class="val">Hand over B2 + gel · collect empty B1</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 60</strong> — Aid station 11 🔀</span><span class="val">Hand over B3 + gel · collect empty B2</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 80</strong> — Aid station 15 🔀</span><span class="val">Hand over B4 (last) + gel · collect empty B3</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 100</strong> — Finish 🏁</span><span class="val">Collect empty B4 🎉</span></div>
+        <div style="margin-top:8px;font-size:11px;color:#666;line-height:1.6">⚠️ Only one bike on the course at a time (multiple followers can take turns). Helmet recommended, phone advised. Do not shelter the runner. Aid station access is reserved for accredited followers (follower bib required).</div>
+      </div>
+
+      <div class="section-title">🎒 Bottles to prepare (the night before)</div>
+      <div class="nutri-card card-grey">
+        <h4>5 identical bottles labelled B0 to B4</h4>
+        <div class="nutri-row"><span class="lbl">Water</span><span class="val">500 mL (add on race morning)</span></div>
+        <div class="nutri-row"><span class="lbl">Decathlon 1:0.8 Drink</span><span class="val">60 g (powder)</span></div>
+        <div class="nutri-row"><span class="lbl">Electrolytes</span><span class="val">1 Apurna neutral sachet</span></div>
+        <div class="nutri-row"><span class="lbl">Gel (handed separately)</span><span class="val">1 Nutripure Long Distance gel</span></div>
+        <div style="margin-top:8px;font-size:12px;color:#666;line-height:1.6">💡 Pre-fill the Decathlon 1:0.8 powder + Apurna sachet on Friday. Add fresh water race morning. Label B0-B4 in order. B0 is self-carried from the start (the follower only joins at km 16).</div>
+      </div>
+
+      <div class="section-title">🔄 Segment-by-segment plan (20 km)</div>
+      <div class="boucle-card" style="border-color:#888">
+        <h4 style="color:#555">🌙 Segment 0 — Start in the dark — km 0 → 20</h4>
+        <div class="boucle-item"><span class="pill">B0</span><span>Take bottle B0 at the start · sip steadily throughout</span></div>
+        <div class="boucle-item"><span class="pill orange">Gel</span><span>1 Nutripure LD gel · take gradually over 10-15 min at the start of the segment</span></div>
+        <div class="boucle-item"><span class="pill red">🔦 Headlamp</span><span>Mandatory — unlit towpath before sunrise (~08:00-08:15)</span></div>
+      </div>
+      <div class="boucle-card">
+        <h4>➡️ Segment 1 (outbound) — km 20 → 40</h4>
+        <div class="boucle-item"><span class="pill purple">🔀 Handoff</span><span><strong>Aid station 4 (km 20)</strong> — collect B1 + gel from your follower</span></div>
+        <div class="boucle-item"><span class="pill">B1</span><span>Sip steadily throughout the segment</span></div>
+        <div class="boucle-item"><span class="pill orange">Gel</span><span>1 Nutripure LD gel · at the start of the segment · daylight now, stow the headlamp</span></div>
+      </div>
+      <div class="boucle-card" style="border-color:#EF9F27">
+        <h4 style="color:#7a4010">🔁 Segment 2 (outbound + turnaround) — km 40 → 60</h4>
+        <div class="boucle-item"><span class="pill purple">🔀 Handoff</span><span><strong>Aid station 8 (km 40)</strong> — collect B2 + gel</span></div>
+        <div class="boucle-item"><span class="pill orange">B2</span><span>Sip steadily · time control at km 56 (before 15:00) then turnaround at Épagnette (km ~57)</span></div>
+        <div class="boucle-item"><span class="pill orange">Gel</span><span>1 Nutripure LD gel</span></div>
+      </div>
+      <div class="boucle-card">
+        <h4>⬅️ Segment 3 (return) — km 60 → 80</h4>
+        <div class="boucle-item"><span class="pill purple">🔀 Handoff</span><span><strong>Aid station 11 (km 60)</strong> — collect B3 + gel</span></div>
+        <div class="boucle-item"><span class="pill">B3</span><span>Sip steadily · keep fuelling even if appetite drops</span></div>
+        <div class="boucle-item"><span class="pill orange">Gel</span><span>1 Nutripure LD gel</span></div>
+      </div>
+      <div class="boucle-card" style="border-color:#EF9F27">
+        <h4 style="color:#7a4010">⬅️ Segment 4 (return, final) — km 80 → 100</h4>
+        <div class="boucle-item"><span class="pill purple">🔀 Handoff</span><span><strong>Aid station 15 (km 80)</strong> — collect B4 (last bottle) + gel · only 20 km left!</span></div>
+        <div class="boucle-item"><span class="pill orange">B4</span><span>Drink through to the finish · keep carbs coming no matter what</span></div>
+        <div class="boucle-item"><span class="pill orange">Gel</span><span>Last gel of the race</span></div>
+      </div>
+
+      <div class="section-title">🧪 Bottle composition</div>
+      <div class="nutri-card card-grey">
+        <h4>Per 500 mL bottle — per segment (~1h35 at 4:45/km)</h4>
+        <div class="nutri-row"><span class="lbl">60 g Decathlon 1:0.8 Drink</span><span class="val">58 g carbs · ~230 kcal · 300 mg Na · 34 mg Mg</span></div>
+        <div class="nutri-row"><span class="lbl">1 Apurna neutral sachet</span><span class="val">500 mg Na · 500 mg K · 180 mg Mg</span></div>
+        <div class="nutri-row"><span class="lbl">1 Nutripure LD gel (separate)</span><span class="val">30 g carbs · 120 kcal · 53 mg Na</span></div>
+        <div class="nutri-row" style="border-top:2px solid #1D9E75;margin-top:4px;padding-top:8px;font-weight:700;color:#085041">
+          <span class="lbl">Total per segment</span><span class="val">~88 g carbs · ~350 kcal · 853 mg Na</span>
+        </div>
+      </div>
+
+      <div class="section-title">🔦 Night, light &amp; cool weather</div>
+      <div class="nutri-card card-orange">
+        <h4>Start before sunrise — estimated conditions (check forecast before race day)</h4>
+        <div class="nutri-row"><span class="lbl">06:30 (start, dark)</span><span class="val">~8-10°C · headlamp mandatory</span></div>
+        <div class="nutri-row"><span class="lbl">~08:00-08:15 (sunrise)</span><span class="val">~10-12°C · headlamp can be stowed</span></div>
+        <div class="nutri-row"><span class="lbl">Midday (around the turnaround)</span><span class="val">~14-17°C · most comfortable</span></div>
+        <div class="nutri-row"><span class="lbl">Late afternoon (return)</span><span class="val">~13-15°C · may cool down, pack a light layer</span></div>
+      </div>
+      <div class="warning-box">⚠️ <strong>Unlit towpath</strong> — a headlamp is mandatory until sunrise. Runners over 12h (and their follower) must also carry a headlamp for the end of the course as darkness returns. Golden rule: test nothing new on race day, validate this plan on a long training run beforehand.</div>
+
+      <div class="section-title">🗓 Checkpoint dashboard</div>
+      <table>
+        <thead><tr><th>Checkpoint</th><th>Km</th><th>Time</th><th>Action</th></tr></thead>
+        <tbody id="nutri-body-en"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SUIVI LIVE -->
+  <div id="tab-suivi" class="panel">
+
+    <div class="finish-banner">
+      <div class="fb-item"><div class="fb-val" id="sv-finish">—</div><div class="fb-lbl fr-inline">Arrivée estimée</div><div class="fb-lbl en-inline">Est. finish</div></div>
+      <div class="fb-item"><div class="fb-val" id="sv-total">—</div><div class="fb-lbl fr-inline">Temps total estimé</div><div class="fb-lbl en-inline">Est. total time</div></div>
+      <div class="fb-item"><div class="fb-val" id="sv-pace">—</div><div class="fb-lbl fr-inline">Allure moy. actuelle</div><div class="fb-lbl en-inline">Current avg pace</div></div>
+    </div>
+
+    <div class="suivi-legend">
+      <span><span style="display:inline-block;width:12px;height:12px;background:#f0faf5;border:1px solid #1D9E75;border-radius:2px"></span><span class="fr-inline">Vitesse saisie + prédictions mises à jour</span><span class="en-inline">Speed entered + updated predictions</span></span>
+      <span><span style="color:#888;font-size:11px">→ <span class="fr-inline">Entrer la vitesse (km/h) et appuyer sur Entrée</span><span class="en-inline">Enter speed (km/h) and press Enter</span></span></span>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th><span class="fr-inline">Point</span><span class="en-inline">Checkpoint</span></th>
+          <th>Km</th>
+          <th><span class="fr-inline">Temps cumulé</span><span class="en-inline">Elapsed</span></th>
+          <th><span class="fr-inline">Heure passage</span><span class="en-inline">Est. time</span></th>
+          <th><span class="fr-inline">Allure locale</span><span class="en-inline">Seg. pace</span></th>
+          <th><span class="fr-inline">Barrière</span><span class="en-inline">Cutoff</span></th>
+          <th><span class="fr-inline">Vitesse réelle (km/h)</span><span class="en-inline">Real speed (km/h)</span></th>
+        </tr>
+      </thead>
+      <tbody id="suivi-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- INFOS COURSE -->
+  <div id="tab-infos" class="panel">
+    <div class="fr">
+      <div class="section-title">📅 Infos clés</div>
+      <table class="infos-table">
+        <tbody>
+          <tr><td>Date</td><td>Samedi 3 octobre 2026</td></tr>
+          <tr><td>Départ</td><td>06h30</td></tr>
+          <tr><td>Lieu</td><td>Parc du Grand Marais, rue du Grand Marais, 80000 Amiens</td></tr>
+          <tr><td>Temps limite</td><td>15h (arrivée au plus tard à 21h30)</td></tr>
+          <tr><td>Parcours</td><td>Aller-retour sur le chemin de halage, entre le Parc du Grand Marais, Rivery, puis vers Épagnette. ~480-500 m D+ cumulé (parcours globalement plat).</td></tr>
+          <tr><td>Label</td><td>FFA Label Argent · Championnats de France FFA 2026-2027</td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">⏱ Barrières horaires officielles</div>
+      <table>
+        <thead><tr><th>Km</th><th>Passage requis avant</th><th>Temps de course</th></tr></thead>
+        <tbody>
+          <tr><td>14 km</td><td>08h30</td><td>2h00</td></tr>
+          <tr><td>35 km</td><td>12h00</td><td>5h30</td></tr>
+          <tr><td>56 km</td><td>15h00</td><td>8h30</td></tr>
+          <tr><td>77 km</td><td>18h00</td><td>11h30</td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">🎽 Retrait des dossards</div>
+      <div class="nutri-card card-grey">
+        <div class="nutri-row"><span class="lbl">Chez un partenaire</span><span class="val">Mercredi et jeudi (lieu à préciser)</span></div>
+        <div class="nutri-row"><span class="lbl">Parc du Grand Marais</span><span class="val">Vendredi 15h-20h · Samedi 5h30-6h15</span></div>
+      </div>
+
+      <div class="section-title">🚿 Consignes, douches &amp; parking</div>
+      <div class="nutri-card card-grey">
+        <div class="nutri-row"><span class="lbl">Consignes</span><span class="val">Sur place dès 6h · dépôt/reprise sur présentation du dossard</span></div>
+        <div class="nutri-row"><span class="lbl">Douches / vestiaires</span><span class="val">Stade des Spartiates d'Amiens-métropole (non gardés — tout à la consigne)</span></div>
+        <div class="nutri-row"><span class="lbl">Toilettes</span><span class="val">Régulièrement disposées le long du parcours</span></div>
+        <div class="nutri-row"><span class="lbl">Parking</span><span class="val">Parc du Grand Marais · privilégier covoiturage / bus gratuit le samedi à Amiens</span></div>
+        <div class="nutri-row"><span class="lbl">Restauration</span><span class="val">Food-trucks sur place</span></div>
+      </div>
+
+      <div class="section-title">🍽️ Ravitaillement</div>
+      <div class="nutri-card card-grey">
+        <div class="nutri-row"><span class="lbl">Organisation</span><span class="val">Tous les ~5 km · boissons, sucré/salé, fruits secs et frais</span></div>
+        <div class="nutri-row"><span class="lbl">Ravitaillement personnel</span><span class="val">Bacs étiquetés à déposer le vendredi 15h-20h · positionnés le samedi matin par point</span></div>
+        <div class="nutri-row"><span class="lbl">Zones de ravito</span><span class="val">Ravitaillement autorisé sur l'ensemble du parcours</span></div>
+      </div>
+
+      <div class="section-title">🔦 Sécurité</div>
+      <div class="warning-box">Lampe frontale indispensable avant le lever du jour (chemin de halage non éclairé). Les coureurs en plus de 12h de course et leur suiveur doivent aussi prévoir une frontale pour la fin du parcours. Suiveurs invités à se munir d'un téléphone mobile ; port du casque vivement recommandé.</div>
+
+      <div class="section-title">🏆 Podium, primes &amp; records</div>
+      <div class="nutri-card card-grey">
+        <div class="nutri-row"><span class="lbl">Podium</span><span class="val">19h00 au Parc du Grand Marais — présence indispensable</span></div>
+        <div class="nutri-row"><span class="lbl">Primes 1ère à 6e place (H/F)</span><span class="val">500 € · 350 € · 200 € · 100 € · 100 € · 100 €</span></div>
+        <div class="nutri-row"><span class="lbl">Prime au record</span><span class="val">250 €</span></div>
+        <div class="nutri-row"><span class="lbl">Record féminin</span><span class="val">Camille Chaigneau — 7h28:58 (2021)</span></div>
+        <div class="nutri-row"><span class="lbl">Record masculin</span><span class="val">Wouter Decock — 6h37:20 (2022)</span></div>
+      </div>
+
+      <div class="section-title">📝 Inscriptions</div>
+      <div class="nutri-card card-grey">
+        <div class="nutri-row"><span class="lbl">Où</span><span class="val">Uniquement en ligne sur 100kmdelasomme.com — aucune inscription sur place</span></div>
+        <div class="nutri-row"><span class="lbl">Date limite</span><span class="val">Dimanche 27 septembre 2026, 23h00</span></div>
+        <div class="nutri-row"><span class="lbl">PPS</span><span class="val">Obligatoire pour les non-licenciés FFA compétition, valide au 3/10/26</span></div>
+      </div>
+      <div class="info-box">Source : fiche officielle de la course (100kmdelasomme.com). Certaines informations (tracé GPX définitif, liste précise des ravitos) restent à confirmer par l'organisation avant la course — vérifie le site officiel à l'approche du 3 octobre.</div>
+    </div>
+
+    <div class="en">
+      <div class="section-title">📅 Key info</div>
+      <table class="infos-table">
+        <tbody>
+          <tr><td>Date</td><td>Saturday 3 October 2026</td></tr>
+          <tr><td>Start</td><td>06:30</td></tr>
+          <tr><td>Venue</td><td>Parc du Grand Marais, rue du Grand Marais, 80000 Amiens</td></tr>
+          <tr><td>Time limit</td><td>15h (finish by 21:30 at the latest)</td></tr>
+          <tr><td>Course</td><td>Out-and-back on the towpath, between Parc du Grand Marais, Rivery, then towards Épagnette. ~480-500 m cumulative elevation gain (mostly flat).</td></tr>
+          <tr><td>Label</td><td>FFA Silver Label · FFA French Championships 2026-2027</td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">⏱ Official cutoffs</div>
+      <table>
+        <thead><tr><th>Km</th><th>Must pass before</th><th>Race time</th></tr></thead>
+        <tbody>
+          <tr><td>14 km</td><td>08:30</td><td>2h00</td></tr>
+          <tr><td>35 km</td><td>12:00</td><td>5h30</td></tr>
+          <tr><td>56 km</td><td>15:00</td><td>8h30</td></tr>
+          <tr><td>77 km</td><td>18:00</td><td>11h30</td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">🎽 Bib pickup</div>
+      <div class="nutri-card card-grey">
+        <div class="nutri-row"><span class="lbl">At a partner location</span><span class="val">Wednesday and Thursday (location TBD)</span></div>
+        <div class="nutri-row"><span class="lbl">Parc du Grand Marais</span><span class="val">Friday 15:00-20:00 · Saturday 05:30-06:15</span></div>
+      </div>
+
+      <div class="section-title">🚿 Bag drop, showers &amp; parking</div>
+      <div class="nutri-card card-grey">
+        <div class="nutri-row"><span class="lbl">Bag drop</span><span class="val">On site from 6am · drop-off/pickup on bib presentation</span></div>
+        <div class="nutri-row"><span class="lbl">Showers / changing rooms</span><span class="val">Stade des Spartiates, Amiens-métropole (unattended — lock up your belongings)</span></div>
+        <div class="nutri-row"><span class="lbl">Toilets</span><span class="val">Regularly placed along the course</span></div>
+        <div class="nutri-row"><span class="lbl">Parking</span><span class="val">Parc du Grand Marais · carpooling / free Saturday bus in Amiens encouraged</span></div>
+        <div class="nutri-row"><span class="lbl">Food</span><span class="val">Food trucks on site</span></div>
+      </div>
+
+      <div class="section-title">🍽️ Aid stations</div>
+      <div class="nutri-card card-grey">
+        <div class="nutri-row"><span class="lbl">Organizer</span><span class="val">Every ~5 km · drinks, sweet/savoury food, dried and fresh fruit</span></div>
+        <div class="nutri-row"><span class="lbl">Personal aid ("ravitaillement personnel")</span><span class="val">Labelled bins dropped off Friday 15:00-20:00 · placed Saturday morning per checkpoint</span></div>
+        <div class="nutri-row"><span class="lbl">Aid zones</span><span class="val">Refuelling authorized along the whole course</span></div>
+      </div>
+
+      <div class="section-title">🔦 Safety</div>
+      <div class="warning-box">Headlamp mandatory before sunrise (unlit towpath). Runners over 12h and their follower must also carry a headlamp for the end of the course. Followers advised to carry a mobile phone; helmet strongly recommended.</div>
+
+      <div class="section-title">🏆 Podium, prizes &amp; records</div>
+      <div class="nutri-card card-grey">
+        <div class="nutri-row"><span class="lbl">Podium</span><span class="val">19:00 at Parc du Grand Marais — attendance required</span></div>
+        <div class="nutri-row"><span class="lbl">1st to 6th place prizes (M/F)</span><span class="val">€500 · €350 · €200 · €100 · €100 · €100</span></div>
+        <div class="nutri-row"><span class="lbl">Course record bonus</span><span class="val">€250</span></div>
+        <div class="nutri-row"><span class="lbl">Women's record</span><span class="val">Camille Chaigneau — 7h28:58 (2021)</span></div>
+        <div class="nutri-row"><span class="lbl">Men's record</span><span class="val">Wouter Decock — 6h37:20 (2022)</span></div>
+      </div>
+
+      <div class="section-title">📝 Registration</div>
+      <div class="nutri-card card-grey">
+        <div class="nutri-row"><span class="lbl">Where</span><span class="val">Online only at 100kmdelasomme.com — no on-site registration</span></div>
+        <div class="nutri-row"><span class="lbl">Deadline</span><span class="val">Sunday 27 September 2026, 23:00</span></div>
+        <div class="nutri-row"><span class="lbl">PPS health form</span><span class="val">Required for non-FFA-competition-licensed runners, valid as of 3/10/26</span></div>
+      </div>
+      <div class="info-box">Source: official race sheet (100kmdelasomme.com). Some details (final GPX track, exact aid station list) are still to be confirmed by the organizer before race day — check the official site closer to October 3.</div>
+    </div>
+  </div>
+</div>
+
+<script>// Stored real speeds: key → km/h
+let realSpeeds = {};
+
+// ============================================================
+// LANGUAGE
+// ============================================================
+let currentLang='fr';
+function setLang(lang,btn){
+  currentLang=lang;
+  document.body.classList.toggle('lang-en',lang==='en');
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  updateNutriTable();
+}
+
+// ============================================================
+// GPX DATA — official OpenRunner track (100.0 km out-and-back,
+// Parc du Grand Marais, Amiens ↔ Épagnette)
+// ============================================================
+const GPX_TRACK=[[49.91964,2.26277],[49.91941,2.26263],[49.91927,2.26268],[49.91886,2.26416],[49.91891,2.26443],[49.92016,2.26525],[49.92026,2.26514],[49.92067,2.26362],[49.92063,2.26342],[49.92013,2.26311],[49.92047,2.26188],[49.92069,2.26191],[49.92116,2.26189],[49.92140,2.26196],[49.92140,2.26200],[49.92153,2.26129],[49.92150,2.26105],[49.92141,2.26075],[49.91886,2.25820],[49.91828,2.25859],[49.91632,2.26565],[49.91634,2.26600],[49.91617,2.26609],[49.91361,2.27494],[49.91330,2.27581],[49.91251,2.27706],[49.90945,2.28123],[49.90907,2.28153],[49.90852,2.28188],[49.90708,2.28217],[49.90688,2.28227],[49.90636,2.28276],[49.90546,2.28451],[49.90482,2.28552],[49.90427,2.28620],[49.90347,2.28677],[49.90300,2.28731],[49.90134,2.28810],[49.89997,2.28955],[49.89974,2.28992],[49.89964,2.29027],[49.89951,2.29095],[49.89932,2.29253],[49.89939,2.29292],[49.89953,2.29314],[49.90069,2.29442],[49.90109,2.29472],[49.90152,2.29514],[49.90171,2.29546],[49.90194,2.29549],[49.90211,2.29567],[49.90219,2.29587],[49.90218,2.29607],[49.90207,2.29630],[49.90201,2.29663],[49.90199,2.29722],[49.90187,2.29855],[49.90197,2.29963],[49.90214,2.30099],[49.90194,2.30173],[49.90149,2.30296],[49.90132,2.30367],[49.90129,2.30371],[49.89867,2.30616],[49.89837,2.30660],[49.89777,2.30677],[49.89607,2.30706],[49.89593,2.30714],[49.89580,2.30735],[49.89544,2.30934],[49.89500,2.31085],[49.89497,2.31168],[49.89489,2.31236],[49.89449,2.31377],[49.89443,2.31423],[49.89443,2.31463],[49.89439,2.31493],[49.89436,2.31592],[49.89439,2.31611],[49.89437,2.31588],[49.89438,2.31497],[49.89443,2.31467],[49.89443,2.31432],[49.89452,2.31362],[49.89473,2.31293],[49.89490,2.31218],[49.89499,2.31098],[49.89514,2.31034],[49.89548,2.30915],[49.89563,2.30819],[49.89584,2.30729],[49.89594,2.30713],[49.89614,2.30704],[49.89768,2.30675],[49.89831,2.30660],[49.89844,2.30649],[49.89874,2.30610],[49.89961,2.30525],[49.90131,2.30368],[49.90156,2.30277],[49.90191,2.30181],[49.90211,2.30110],[49.90213,2.30078],[49.90194,2.29943],[49.90188,2.29844],[49.90202,2.29655],[49.90216,2.29614],[49.90219,2.29597],[49.90215,2.29574],[49.90200,2.29555],[49.90169,2.29544],[49.90157,2.29519],[49.90097,2.29459],[49.90068,2.29436],[49.89967,2.29334],[49.89946,2.29308],[49.89933,2.29273],[49.89933,2.29238],[49.89948,2.29115],[49.89966,2.29009],[49.89990,2.28963],[49.90115,2.28827],[49.90144,2.28803],[49.90297,2.28732],[49.90360,2.28667],[49.90421,2.28621],[49.90436,2.28606],[49.90497,2.28526],[49.90531,2.28475],[49.90556,2.28425],[49.90631,2.28290],[49.90644,2.28269],[49.90667,2.28248],[49.90696,2.28223],[49.90724,2.28215],[49.90836,2.28192],[49.90907,2.28154],[49.90939,2.28129],[49.91123,2.27868],[49.91258,2.27686],[49.91325,2.27586],[49.91352,2.27515],[49.91615,2.26613],[49.91634,2.26597],[49.91632,2.26576],[49.91634,2.26553],[49.91822,2.25899],[49.91831,2.25857],[49.91872,2.25833],[49.91875,2.25852],[49.91760,2.26250],[49.91905,2.26346],[49.91927,2.26267],[49.91940,2.26261],[49.92011,2.26309],[49.92047,2.26191],[49.92069,2.26191],[49.92113,2.26186],[49.92141,2.26196],[49.92153,2.26142],[49.92145,2.26085],[49.92129,2.26058],[49.91915,2.25848],[49.91864,2.25803],[49.91848,2.25773],[49.91863,2.25732],[49.91903,2.25597],[49.91903,2.25545],[49.91886,2.25381],[49.91897,2.25261],[49.91879,2.25076],[49.91863,2.24950],[49.91869,2.24813],[49.91819,2.24533],[49.91821,2.24486],[49.91854,2.24285],[49.91894,2.24154],[49.91893,2.24075],[49.91875,2.24029],[49.91805,2.23975],[49.91789,2.23953],[49.91758,2.23844],[49.91754,2.23803],[49.91760,2.23760],[49.91781,2.23680],[49.91778,2.23608],[49.91785,2.23533],[49.91799,2.23448],[49.91799,2.23400],[49.91784,2.23270],[49.91790,2.23218],[49.91820,2.23140],[49.91859,2.22940],[49.91865,2.22861],[49.91868,2.22771],[49.91861,2.22731],[49.91843,2.22695],[49.91806,2.22647],[49.91786,2.22615],[49.91780,2.22520],[49.91786,2.22468],[49.91818,2.22359],[49.91835,2.22290],[49.91819,2.22206],[49.91822,2.22148],[49.91835,2.22100],[49.91870,2.22038],[49.91892,2.21936],[49.91915,2.21882],[49.91957,2.21834],[49.91989,2.21785],[49.92090,2.21599],[49.92140,2.21514],[49.92194,2.21447],[49.92261,2.21323],[49.92292,2.21242],[49.92411,2.21122],[49.92822,2.20519],[49.92860,2.20454],[49.92977,2.20174],[49.93061,2.19981],[49.93077,2.19909],[49.93102,2.19746],[49.93126,2.19649],[49.93148,2.19503],[49.93289,2.19053],[49.93295,2.19019],[49.93282,2.18951],[49.93283,2.18900],[49.93301,2.18851],[49.93359,2.18801],[49.93385,2.18757],[49.93395,2.18695],[49.93404,2.18661],[49.93426,2.18614],[49.93568,2.18350],[49.93611,2.18261],[49.93680,2.18104],[49.93711,2.18062],[49.93757,2.18024],[49.93801,2.18021],[49.93858,2.18046],[49.93893,2.18034],[49.93944,2.17961],[49.94027,2.17849],[49.94059,2.17822],[49.94096,2.17802],[49.94120,2.17771],[49.94141,2.17727],[49.94173,2.17706],[49.94222,2.17703],[49.94313,2.17675],[49.94346,2.17644],[49.94371,2.17605],[49.94393,2.17537],[49.94406,2.17478],[49.94427,2.17443],[49.94533,2.17307],[49.94547,2.17254],[49.94550,2.17203],[49.94549,2.17151],[49.94566,2.17114],[49.94608,2.17086],[49.94637,2.17070],[49.94729,2.16969],[49.94748,2.16934],[49.94755,2.16903],[49.94759,2.16855],[49.94770,2.16802],[49.94789,2.16755],[49.94924,2.16676],[49.94942,2.16651],[49.94943,2.16614],[49.94965,2.16531],[49.94972,2.16486],[49.94967,2.16426],[49.94947,2.16400],[49.94928,2.16366],[49.94913,2.16325],[49.94913,2.16261],[49.94918,2.16202],[49.94938,2.16113],[49.94948,2.16017],[49.94938,2.15940],[49.94925,2.15894],[49.94906,2.15871],[49.94842,2.15842],[49.94821,2.15804],[49.94810,2.15745],[49.94820,2.15686],[49.94844,2.15621],[49.94846,2.15548],[49.94828,2.15479],[49.94784,2.15405],[49.94765,2.15332],[49.94752,2.15307],[49.94709,2.15269],[49.94691,2.15239],[49.94685,2.15199],[49.94683,2.15141],[49.94672,2.15057],[49.94671,2.15025],[49.94687,2.14862],[49.94687,2.14795],[49.94675,2.14748],[49.94631,2.14610],[49.94620,2.14509],[49.94630,2.14435],[49.94785,2.14018],[49.94827,2.13821],[49.94838,2.13705],[49.94863,2.13490],[49.94891,2.13348],[49.94939,2.13217],[49.94978,2.13142],[49.95068,2.13038],[49.95129,2.12957],[49.95173,2.12873],[49.95204,2.12747],[49.95259,2.12621],[49.95319,2.12536],[49.95356,2.12429],[49.95417,2.12339],[49.95513,2.12250],[49.95542,2.12194],[49.95573,2.12026],[49.95600,2.11965],[49.95662,2.11897],[49.95737,2.11776],[49.95775,2.11722],[49.95850,2.11646],[49.95889,2.11595],[49.96037,2.11386],[49.96078,2.11346],[49.96178,2.11292],[49.96233,2.11247],[49.96285,2.11237],[49.96377,2.11164],[49.96446,2.11147],[49.96477,2.11112],[49.96498,2.11083],[49.96542,2.11056],[49.96644,2.10897],[49.96700,2.10817],[49.96749,2.10735],[49.96844,2.10628],[49.96874,2.10556],[49.96902,2.10473],[49.96918,2.10401],[49.96951,2.10339],[49.97021,2.10254],[49.97081,2.10145],[49.97148,2.09982],[49.97178,2.09888],[49.97189,2.09830],[49.97239,2.09770],[49.97254,2.09722],[49.97261,2.09657],[49.97283,2.09532],[49.97284,2.09489],[49.97275,2.09436],[49.97280,2.09395],[49.97305,2.09360],[49.97345,2.09345],[49.97373,2.09310],[49.97397,2.09248],[49.97420,2.09164],[49.97440,2.09122],[49.97492,2.09050],[49.97514,2.09003],[49.97519,2.08943],[49.97521,2.08872],[49.97529,2.08818],[49.97545,2.08787],[49.97574,2.08748],[49.97611,2.08629],[49.97662,2.08552],[49.97681,2.08502],[49.97693,2.08375],[49.97713,2.08313],[49.97730,2.08271],[49.97751,2.08136],[49.97777,2.08093],[49.97821,2.08029],[49.97837,2.07969],[49.97841,2.07909],[49.97863,2.07846],[49.97876,2.07792],[49.97866,2.07692],[49.97849,2.07642],[49.97847,2.07594],[49.97861,2.07490],[49.97875,2.07453],[49.97984,2.07330],[49.98033,2.07304],[49.98078,2.07276],[49.98114,2.07250],[49.98248,2.07119],[49.98284,2.07080],[49.98313,2.07058],[49.99267,2.06139],[50.00167,2.05267],[50.00254,2.05470],[50.00446,2.06128],[50.00487,2.06451],[50.00520,2.06513],[50.00612,2.06911],[50.00652,2.07017],[50.00672,2.07047],[50.00767,2.07145],[50.00796,2.07220],[50.00834,2.07280],[50.00869,2.07350],[50.00884,2.07492],[50.00895,2.07544],[50.00908,2.07574],[50.00858,2.07675],[50.00919,2.07733],[50.00928,2.07750],[50.00919,2.07777],[50.00906,2.07775],[50.00858,2.07726],[50.00856,2.07709],[50.00859,2.07696],[50.00871,2.07688],[50.00857,2.07678],[50.00909,2.07572],[50.00898,2.07556],[50.00888,2.07518],[50.00874,2.07375],[50.00852,2.07308],[50.00792,2.07194],[50.00762,2.07149],[50.00735,2.07101],[50.00689,2.07067],[50.00658,2.07032],[50.00644,2.06993],[50.00618,2.06935],[50.00524,2.06521],[50.00489,2.06445],[50.00447,2.06110],[50.00253,2.05448],[50.00169,2.05264],[50.00404,2.05044],[50.00470,2.04986],[50.00555,2.04978],[50.00590,2.04981],[50.00686,2.04936],[50.00837,2.04909],[50.00907,2.04852],[50.00976,2.04765],[50.01137,2.04674],[50.01273,2.04546],[50.01332,2.04447],[50.01419,2.04212],[50.01443,2.04083],[50.01492,2.03976],[50.01517,2.03914],[50.01560,2.03780],[50.01860,2.02925],[50.01991,2.02526],[50.02005,2.02486],[50.02034,2.02434],[50.02000,2.02389],[50.02030,2.02347],[50.02061,2.02236],[50.02188,2.01883],[50.02212,2.01807],[50.02224,2.01752],[50.02251,2.01707],[50.02306,2.01632],[50.02326,2.01560],[50.02325,2.01493],[50.02317,2.01388],[50.02322,2.01343],[50.02338,2.01275],[50.02341,2.01187],[50.02347,2.01119],[50.02344,2.01059],[50.02358,2.00981],[50.02357,2.00922],[50.02365,2.00853],[50.02363,2.00814],[50.02342,2.00757],[50.02330,2.00685],[50.02334,2.00604],[50.02360,2.00567],[50.02461,2.00500],[50.02486,2.00447],[50.02535,2.00256],[50.02570,2.00181],[50.02840,1.99799],[50.02855,1.99763],[50.02891,1.99730],[50.02934,1.99722],[50.02977,1.99676],[50.03005,1.99618],[50.03062,1.99564],[50.03085,1.99529],[50.03104,1.99452],[50.03149,1.99340],[50.03206,1.99231],[50.03237,1.99189],[50.03286,1.99134],[50.03303,1.99088],[50.03310,1.99036],[50.03347,1.98913],[50.03425,1.98729],[50.03434,1.98696],[50.03426,1.98661],[50.03460,1.98534],[50.03474,1.98512],[50.03491,1.98493],[50.03512,1.98440],[50.03559,1.98301],[50.03569,1.98299],[50.03586,1.98310],[50.03587,1.98321],[50.03579,1.98341],[50.03581,1.98350],[50.03622,1.98370],[50.03645,1.98360],[50.03759,1.98185],[50.03799,1.98114],[50.03854,1.97908],[50.03850,1.97867],[50.03825,1.97719],[50.03804,1.97562],[50.03809,1.97545],[50.03817,1.97531],[50.03834,1.97458],[50.03842,1.97358],[50.03839,1.97197],[50.03845,1.97133],[50.03853,1.97104],[50.03867,1.97082],[50.03886,1.97063],[50.03898,1.97062],[50.03933,1.97067],[50.03947,1.97065],[50.03968,1.97054],[50.03980,1.97045],[50.03993,1.97028],[50.04000,1.97009],[50.04002,1.96996],[50.03997,1.96932],[50.03986,1.96886],[50.03949,1.96793],[50.03927,1.96721],[50.03920,1.96648],[50.03920,1.96606],[50.03923,1.96570],[50.03941,1.96484],[50.03992,1.96317],[50.04007,1.96284],[50.04020,1.96263],[50.04094,1.96175],[50.04107,1.96154],[50.04113,1.96135],[50.04106,1.96027],[50.04093,1.95984],[50.04068,1.95920],[50.04059,1.95890],[50.04052,1.95846],[50.04054,1.95774],[50.04069,1.95715],[50.04078,1.95691],[50.04095,1.95666],[50.04152,1.95612],[50.04160,1.95598],[50.04168,1.95575],[50.04171,1.95547],[50.04173,1.95525],[50.04172,1.95469],[50.04168,1.95433],[50.04154,1.95354],[50.04113,1.95055],[50.04114,1.95027],[50.04138,1.94844],[50.04163,1.94767],[50.04169,1.94729],[50.04166,1.94638],[50.04170,1.94622],[50.04169,1.94600],[50.04166,1.94590],[50.04169,1.94565],[50.04168,1.94458],[50.04169,1.94437],[50.04182,1.94358],[50.04186,1.94314],[50.04169,1.94223],[50.04171,1.94182],[50.04188,1.94130],[50.04200,1.94114],[50.04217,1.94102],[50.04233,1.94096],[50.04259,1.94092],[50.04400,1.94023],[50.04415,1.94011],[50.04425,1.93993],[50.04446,1.93777],[50.04446,1.93739],[50.04455,1.93550],[50.04461,1.93530],[50.04486,1.93492],[50.04524,1.93456],[50.04575,1.93363],[50.04630,1.93306],[50.04641,1.93291],[50.04646,1.93277],[50.04650,1.93254],[50.04647,1.93163],[50.04648,1.93137],[50.04652,1.93113],[50.04682,1.92971],[50.04700,1.92910],[50.04730,1.92842],[50.04738,1.92802],[50.04739,1.92725],[50.04753,1.92678],[50.04845,1.92519],[50.04853,1.92501],[50.04880,1.92405],[50.04903,1.92357],[50.04955,1.92307],[50.04961,1.92290],[50.04988,1.92180],[50.04998,1.92092],[50.04997,1.92059],[50.04984,1.91910],[50.04986,1.91821],[50.04996,1.91664],[50.04984,1.91560],[50.04987,1.91539],[50.05006,1.91469],[50.05039,1.91411],[50.05080,1.91362],[50.05116,1.91306],[50.05135,1.91271],[50.05145,1.91242],[50.05150,1.91216],[50.05154,1.91209],[50.05185,1.91223],[50.05191,1.91199],[50.05211,1.91064],[50.05209,1.91003],[50.05200,1.90928],[50.05203,1.90895],[50.05210,1.90857],[50.05235,1.90790],[50.05254,1.90756],[50.05267,1.90740],[50.05283,1.90728],[50.05292,1.90692],[50.05309,1.90654],[50.05338,1.90597],[50.05439,1.90414],[50.05462,1.90341],[50.05464,1.90321],[50.05437,1.90315],[50.05437,1.90311],[50.05428,1.90308],[50.05449,1.90081],[50.05435,1.89981],[50.05430,1.89962],[50.05425,1.89917],[50.05422,1.89905],[50.05407,1.89882],[50.05405,1.89874],[50.05406,1.89831],[50.05416,1.89723],[50.05421,1.89619],[50.05442,1.89526],[50.05457,1.89495],[50.05474,1.89434],[50.05477,1.89396],[50.05486,1.89334],[50.05493,1.89309],[50.05503,1.89286],[50.05515,1.89266],[50.05532,1.89250],[50.05573,1.89220],[50.05583,1.89206],[50.05621,1.89098],[50.05680,1.88971],[50.05735,1.88840],[50.05747,1.88821],[50.05797,1.88780],[50.05814,1.88772],[50.05869,1.88765],[50.05884,1.88754],[50.05895,1.88743],[50.05922,1.88689],[50.05936,1.88640],[50.05946,1.88556],[50.05951,1.88472],[50.05950,1.88373],[50.05967,1.88291],[50.05989,1.88250],[50.06047,1.88192],[50.06091,1.88124],[50.06114,1.88103],[50.06151,1.88085],[50.06185,1.88073],[50.06213,1.88057],[50.06249,1.88030],[50.06258,1.88014],[50.06283,1.87946],[50.06302,1.87906],[50.06321,1.87887],[50.06336,1.87879],[50.06349,1.87878],[50.06374,1.87888],[50.06407,1.87926],[50.06433,1.87935],[50.06453,1.87939],[50.06495,1.87936],[50.06529,1.87916],[50.06557,1.87890],[50.06566,1.87872],[50.06578,1.87832],[50.06581,1.87814],[50.06582,1.87783],[50.06580,1.87754],[50.06572,1.87710],[50.06570,1.87670],[50.06575,1.87639],[50.06606,1.87524],[50.06671,1.87405],[50.06686,1.87390],[50.06776,1.87331],[50.06792,1.87311],[50.06805,1.87275],[50.06823,1.87205],[50.06825,1.87157],[50.06842,1.87051],[50.06849,1.87027],[50.06860,1.87008],[50.06894,1.86973],[50.06970,1.86950],[50.06999,1.86933],[50.07050,1.86914],[50.07066,1.86903],[50.07075,1.86892],[50.07129,1.86794],[50.07149,1.86763],[50.07187,1.86659],[50.07194,1.86627],[50.07199,1.86508],[50.07191,1.86389],[50.07192,1.86361],[50.07199,1.86331],[50.07209,1.86310],[50.07370,1.86042],[50.07381,1.86014],[50.07416,1.85890],[50.07427,1.85862],[50.07461,1.85801],[50.07493,1.85728],[50.07510,1.85644],[50.07511,1.85620],[50.07519,1.85570],[50.07533,1.85533],[50.07598,1.85402],[50.07616,1.85375],[50.07691,1.85313],[50.07805,1.85233],[50.07766,1.85256],[50.07677,1.85323],[50.07623,1.85369],[50.07593,1.85412],[50.07544,1.85506],[50.07517,1.85583],[50.07497,1.85715],[50.07473,1.85779],[50.07436,1.85846],[50.07411,1.85907],[50.07376,1.86030],[50.07353,1.86075],[50.07223,1.86287],[50.07196,1.86347],[50.07193,1.86379],[50.07198,1.86561],[50.07197,1.86612],[50.07182,1.86676],[50.07157,1.86742],[50.07140,1.86780],[50.07101,1.86849],[50.07082,1.86881],[50.07061,1.86908],[50.07042,1.86917],[50.07011,1.86926],[50.06979,1.86948],[50.06912,1.86967],[50.06884,1.86985],[50.06852,1.87018],[50.06845,1.87040],[50.06837,1.87087],[50.06820,1.87221],[50.06801,1.87288],[50.06785,1.87321],[50.06680,1.87397],[50.06663,1.87417],[50.06609,1.87517],[50.06571,1.87658],[50.06571,1.87695],[50.06582,1.87769],[50.06583,1.87802],[50.06574,1.87852],[50.06562,1.87882],[50.06536,1.87909],[50.06489,1.87938],[50.06464,1.87937],[50.06416,1.87927],[50.06391,1.87907],[50.06369,1.87885],[50.06342,1.87879],[50.06329,1.87884],[50.06311,1.87896],[50.06293,1.87923],[50.06265,1.87996],[50.06253,1.88021],[50.06243,1.88035],[50.06222,1.88053],[50.06128,1.88097],[50.06100,1.88117],[50.06085,1.88134],[50.06059,1.88173],[50.06018,1.88222],[50.05996,1.88243],[50.05970,1.88285],[50.05958,1.88327],[50.05950,1.88391],[50.05952,1.88451],[50.05949,1.88525],[50.05933,1.88652],[50.05917,1.88702],[50.05901,1.88730],[50.05879,1.88757],[50.05848,1.88767],[50.05806,1.88776],[50.05765,1.88804],[50.05740,1.88830],[50.05687,1.88955],[50.05628,1.89079],[50.05588,1.89194],[50.05578,1.89214],[50.05539,1.89245],[50.05508,1.89278],[50.05498,1.89298],[50.05489,1.89324],[50.05475,1.89421],[50.05462,1.89479],[50.05448,1.89512],[50.05437,1.89551],[50.05421,1.89634],[50.05418,1.89664],[50.05418,1.89713],[50.05406,1.89862],[50.05412,1.89888],[50.05425,1.89912],[50.05429,1.89947],[50.05443,1.90021],[50.05450,1.90098],[50.05429,1.90298],[50.05432,1.90314],[50.05458,1.90317],[50.05465,1.90329],[50.05445,1.90398],[50.05434,1.90422],[50.05301,1.90670],[50.05287,1.90721],[50.05273,1.90734],[50.05244,1.90776],[50.05220,1.90820],[50.05205,1.90878],[50.05201,1.90911],[50.05211,1.91031],[50.05209,1.91081],[50.05190,1.91208],[50.05184,1.91225],[50.05153,1.91207],[50.05140,1.91257],[50.05064,1.91380],[50.05023,1.91440],[50.04998,1.91494],[50.04986,1.91552],[50.04988,1.91603],[50.04995,1.91648],[50.04997,1.91684],[50.04988,1.91791],[50.04986,1.91863],[50.04987,1.91929],[50.04998,1.92083],[50.04991,1.92153],[50.04974,1.92240],[50.04964,1.92276],[50.04949,1.92313],[50.04911,1.92347],[50.04885,1.92394],[50.04858,1.92482],[50.04841,1.92529],[50.04757,1.92669],[50.04742,1.92714],[50.04735,1.92821],[50.04717,1.92875],[50.04694,1.92933],[50.04658,1.93083],[50.04646,1.93190],[50.04649,1.93268],[50.04637,1.93298],[50.04617,1.93322],[50.04584,1.93353],[50.04553,1.93409],[50.04535,1.93436],[50.04513,1.93467],[50.04481,1.93499],[50.04459,1.93537],[50.04455,1.93564],[50.04451,1.93632],[50.04446,1.93767],[50.04427,1.93986],[50.04421,1.94003],[50.04407,1.94017],[50.04250,1.94096],[50.04225,1.94100],[50.04208,1.94110],[50.04194,1.94125],[50.04183,1.94151],[50.04171,1.94191],[50.04173,1.94246],[50.04181,1.94279],[50.04186,1.94326],[50.04170,1.94426],[50.04170,1.94741],[50.04137,1.94860],[50.04114,1.95044],[50.04150,1.95329],[50.04171,1.95452],[50.04173,1.95505],[50.04170,1.95560],[50.04164,1.95589],[50.04145,1.95617],[50.04089,1.95677],[50.04073,1.95703],[50.04053,1.95786],[50.04053,1.95834],[50.04057,1.95879],[50.04105,1.96018],[50.04114,1.96102],[50.04112,1.96139],[50.04099,1.96171],[50.04072,1.96200],[50.04024,1.96258],[50.04010,1.96277],[50.03996,1.96306],[50.03946,1.96467],[50.03921,1.96591],[50.03921,1.96640],[50.03926,1.96712],[50.03946,1.96781],[50.03992,1.96905],[50.04003,1.96989],[50.03997,1.97020],[50.03987,1.97037],[50.03974,1.97050],[50.03952,1.97064],[50.03938,1.97066],[50.03904,1.97062],[50.03879,1.97068],[50.03850,1.97115],[50.03843,1.97149],[50.03839,1.97232],[50.03844,1.97343],[50.03837,1.97433],[50.03824,1.97500],[50.03808,1.97553],[50.03806,1.97579],[50.03823,1.97710],[50.03854,1.97884],[50.03852,1.97914],[50.03845,1.97946],[50.03804,1.98096],[50.03795,1.98122],[50.03682,1.98306],[50.03654,1.98348],[50.03635,1.98365],[50.03616,1.98368],[50.03581,1.98350],[50.03584,1.98317],[50.03577,1.98306],[50.03564,1.98299],[50.03553,1.98317],[50.03520,1.98418],[50.03498,1.98475],[50.03483,1.98504],[50.03468,1.98520],[50.03457,1.98547],[50.03429,1.98647],[50.03431,1.98704],[50.03419,1.98750],[50.03336,1.98941],[50.03311,1.99022],[50.03306,1.99076],[50.03291,1.99123],[50.03269,1.99152],[50.03243,1.99181],[50.03202,1.99241],[50.03136,1.99373],[50.03108,1.99438],[50.03087,1.99514],[50.03071,1.99553],[50.03043,1.99590],[50.03014,1.99610],[50.02994,1.99635],[50.02978,1.99668],[50.02947,1.99712],[50.02920,1.99724],[50.02883,1.99736],[50.02861,1.99754],[50.02844,1.99787],[50.02805,1.99849],[50.02694,2.00012],[50.02582,2.00161],[50.02548,2.00226],[50.02525,2.00293],[50.02495,2.00406],[50.02474,2.00473],[50.02450,2.00504],[50.02353,2.00576],[50.02341,2.00594],[50.02334,2.00624],[50.02331,2.00674],[50.02334,2.00712],[50.02340,2.00746],[50.02361,2.00803],[50.02364,2.00833],[50.02357,2.00937],[50.02357,2.00989],[50.02345,2.01049],[50.02345,2.01143],[50.02339,2.01203],[50.02340,2.01266],[50.02319,2.01374],[50.02328,2.01537],[50.02313,2.01608],[50.02284,2.01661],[50.02238,2.01724],[50.02217,2.01774],[50.02206,2.01823],[50.02178,2.01916],[50.02063,2.02228],[50.02041,2.02319],[50.02025,2.02353],[50.02007,2.02377],[50.02005,2.02396],[50.02031,2.02428],[50.02029,2.02445],[50.02003,2.02495],[50.01985,2.02545],[50.01917,2.02755],[50.01798,2.03104],[50.01578,2.03727],[50.01508,2.03939],[50.01457,2.04051],[50.01436,2.04123],[50.01423,2.04194],[50.01370,2.04350],[50.01338,2.04434],[50.01262,2.04558],[50.01154,2.04660],[50.01103,2.04694],[50.00997,2.04754],[50.00952,2.04794],[50.00895,2.04865],[50.00856,2.04894],[50.00814,2.04914],[50.00744,2.04925],[50.00672,2.04944],[50.00607,2.04974],[50.00575,2.04983],[50.00519,2.04988],[50.00482,2.04983],[50.00462,2.04986],[50.00455,2.05005],[50.00394,2.05053],[50.00171,2.05260],[50.00186,2.05301],[50.00248,2.05446],[50.00345,2.05786],[50.00442,2.06113],[50.00485,2.06441],[50.00518,2.06505],[50.00622,2.06949],[50.00655,2.07026],[50.00698,2.07077],[50.00755,2.07131],[50.00817,2.07255],[50.00863,2.07334],[50.00897,2.07548],[50.00908,2.07571],[50.00856,2.07679],[50.00920,2.07732],[50.00926,2.07743],[50.00927,2.07759],[50.00923,2.07771],[50.00908,2.07773],[50.00872,2.07739],[50.00857,2.07721],[50.00855,2.07703],[50.00862,2.07692],[50.00869,2.07688],[50.00856,2.07677],[50.00908,2.07574],[50.00893,2.07539],[50.00879,2.07418],[50.00869,2.07356],[50.00828,2.07270],[50.00756,2.07141],[50.00742,2.07106],[50.00711,2.07090],[50.00662,2.07038],[50.00635,2.06976],[50.00608,2.06888],[50.00525,2.06539],[50.00518,2.06502],[50.00491,2.06455],[50.00485,2.06424],[50.00456,2.06205],[50.00451,2.06147],[50.00438,2.06084],[50.00324,2.05701],[50.00262,2.05482],[50.00236,2.05409],[50.00167,2.05264],[49.99977,2.05452],[49.99870,2.05548],[49.99529,2.05887],[49.98847,2.06540],[49.98502,2.06875],[49.98203,2.07161],[49.98055,2.07298],[49.97999,2.07315],[49.97943,2.07370],[49.97889,2.07439],[49.97866,2.07474],[49.97850,2.07550],[49.97848,2.07628],[49.97862,2.07675],[49.97871,2.07719],[49.97874,2.07771],[49.97872,2.07818],[49.97849,2.07887],[49.97829,2.08002],[49.97792,2.08065],[49.97762,2.08107],[49.97743,2.08183],[49.97735,2.08254],[49.97720,2.08303],[49.97698,2.08345],[49.97690,2.08404],[49.97684,2.08479],[49.97669,2.08537],[49.97602,2.08651],[49.97584,2.08721],[49.97561,2.08768],[49.97538,2.08801],[49.97523,2.08852],[49.97517,2.08967],[49.97502,2.09029],[49.97477,2.09074],[49.97446,2.09117],[49.97429,2.09145],[49.97377,2.09302],[49.97353,2.09339],[49.97298,2.09368],[49.97274,2.09412],[49.97282,2.09515],[49.97276,2.09563],[49.97264,2.09618],[49.97258,2.09686],[49.97249,2.09739],[49.97232,2.09780],[49.97189,2.09832],[49.97182,2.09872],[49.97165,2.09929],[49.97097,2.10119],[49.97034,2.10226],[49.97010,2.10271],[49.96936,2.10358],[49.96914,2.10428],[49.96895,2.10501],[49.96863,2.10583],[49.96825,2.10654],[49.96768,2.10714],[49.96722,2.10774],[49.96692,2.10831],[49.96659,2.10877],[49.96569,2.11014],[49.96535,2.11060],[49.96505,2.11078],[49.96484,2.11100],[49.96452,2.11140],[49.96385,2.11160],[49.96368,2.11170],[49.96291,2.11231],[49.96271,2.11239],[49.96237,2.11244],[49.96217,2.11257],[49.96187,2.11284],[49.96124,2.11314],[49.96057,2.11363],[49.96011,2.11420],[49.95860,2.11635],[49.95791,2.11704],[49.95765,2.11738],[49.95676,2.11875],[49.95649,2.11911],[49.95612,2.11950],[49.95578,2.12003],[49.95562,2.12060],[49.95550,2.12151],[49.95529,2.12223],[49.95500,2.12261],[49.95440,2.12318],[49.95405,2.12360],[49.95367,2.12414],[49.95345,2.12464],[49.95324,2.12526],[49.95287,2.12575],[49.95248,2.12648],[49.95202,2.12758],[49.95164,2.12895],[49.95121,2.12968],[49.95075,2.13028],[49.94990,2.13126],[49.94953,2.13188],[49.94925,2.13251],[49.94885,2.13370],[49.94867,2.13469],[49.94827,2.13784],[49.94806,2.13906],[49.94787,2.13998],[49.94761,2.14074],[49.94631,2.14423],[49.94619,2.14480],[49.94623,2.14549],[49.94634,2.14630],[49.94683,2.14776],[49.94687,2.14832],[49.94673,2.15042],[49.94688,2.15215],[49.94698,2.15255],[49.94757,2.15318],[49.94791,2.15418],[49.94817,2.15461],[49.94833,2.15498],[49.94848,2.15564],[49.94841,2.15633],[49.94811,2.15722],[49.94812,2.15780],[49.94829,2.15828],[49.94858,2.15851],[49.94894,2.15863],[49.94918,2.15883],[49.94934,2.15922],[49.94944,2.15988],[49.94942,2.16077],[49.94922,2.16167],[49.94915,2.16236],[49.94914,2.16305],[49.94923,2.16353],[49.94956,2.16411],[49.94969,2.16439],[49.94973,2.16476],[49.94968,2.16515],[49.94948,2.16599],[49.94943,2.16635],[49.94935,2.16666],[49.94885,2.16700],[49.94802,2.16750],[49.94780,2.16776],[49.94766,2.16819],[49.94752,2.16919],[49.94741,2.16949],[49.94693,2.17010],[49.94645,2.17065],[49.94581,2.17099],[49.94557,2.17129],[49.94551,2.17166],[49.94551,2.17222],[49.94545,2.17267],[49.94528,2.17313],[49.94495,2.17360],[49.94419,2.17456],[49.94403,2.17494],[49.94391,2.17551],[49.94376,2.17586],[49.94355,2.17629],[49.94329,2.17660],[49.94286,2.17682],[49.94233,2.17702],[49.94186,2.17705],[49.94152,2.17716],[49.94129,2.17749],[49.94110,2.17785],[49.94083,2.17808],[49.94045,2.17835],[49.94014,2.17867],[49.93900,2.18027],[49.93878,2.18049],[49.93845,2.18042],[49.93816,2.18029],[49.93782,2.18021],[49.93745,2.18029],[49.93689,2.18087],[49.93583,2.18317],[49.93498,2.18480],[49.93433,2.18594],[49.93411,2.18641],[49.93399,2.18674],[49.93387,2.18736],[49.93376,2.18776],[49.93346,2.18814],[49.93308,2.18843],[49.93291,2.18879],[49.93282,2.18928],[49.93294,2.19034],[49.93283,2.19076],[49.93176,2.19402],[49.93143,2.19513],[49.93135,2.19560],[49.93133,2.19610],[49.93110,2.19714],[49.93084,2.19850],[49.93080,2.19894],[49.93062,2.19972],[49.93031,2.20051],[49.92981,2.20164],[49.92869,2.20434],[49.92848,2.20478],[49.92435,2.21088],[49.92388,2.21145],[49.92315,2.21216],[49.92284,2.21262],[49.92244,2.21351],[49.92198,2.21425],[49.92109,2.21556],[49.92057,2.21659],[49.92008,2.21741],[49.91969,2.21815],[49.91928,2.21863],[49.91905,2.21903],[49.91882,2.21969],[49.91868,2.22023],[49.91829,2.22115],[49.91819,2.22163],[49.91824,2.22232],[49.91833,2.22266],[49.91831,2.22311],[49.91790,2.22451],[49.91782,2.22498],[49.91782,2.22555],[49.91786,2.22605],[49.91798,2.22643],[49.91837,2.22682],[49.91856,2.22717],[49.91866,2.22756],[49.91866,2.22823],[49.91862,2.22918],[49.91829,2.23097],[49.91810,2.23172],[49.91787,2.23236],[49.91785,2.23291],[49.91796,2.23368],[49.91798,2.23427],[49.91781,2.23567],[49.91780,2.23640],[49.91772,2.23706],[49.91762,2.23739],[49.91755,2.23787],[49.91755,2.23833],[49.91784,2.23940],[49.91795,2.23966],[49.91858,2.24014],[49.91883,2.24048],[49.91895,2.24091],[49.91895,2.24140],[49.91883,2.24195],[49.91849,2.24306],[49.91821,2.24464],[49.91816,2.24513],[49.91820,2.24557],[49.91862,2.24792],[49.91866,2.24869],[49.91864,2.24939],[49.91885,2.25171],[49.91896,2.25245],[49.91888,2.25358],[49.91891,2.25413],[49.91903,2.25534],[49.91904,2.25585],[49.91896,2.25621],[49.91849,2.25775],[49.91864,2.25805],[49.91928,2.25862],[49.92051,2.25990],[49.92134,2.26063],[49.92146,2.26094],[49.92152,2.26118],[49.92143,2.26189],[49.92135,2.26199],[49.92116,2.26189],[49.92068,2.26192],[49.92032,2.26172]];
+
+// ============================================================
+// ROUTE (single continuous out-and-back track, normalized to 100 km)
+// ============================================================
+function buildRoute(){
+  function dM(a,b){const dlat=(b[0]-a[0])*111320,dlon=(b[1]-a[1])*111320*Math.cos(a[0]*Math.PI/180);return Math.sqrt(dlat*dlat+dlon*dlon)}
+  const r=[];let c=0,p=null;
+  for(const pt of GPX_TRACK){if(p)c+=dM(p,pt);r.push({lat:pt[0],lon:pt[1],cumKm:c/1000});p=pt}
+  const t=r[r.length-1].cumKm;for(const pt of r)pt.cumKm=pt.cumKm/t*100;return r;
+}
+const FULL_ROUTE=buildRoute();
+function latLonAtKm(km){
+  if(km<=0)return[FULL_ROUTE[0].lat,FULL_ROUTE[0].lon];
+  if(km>=100)return[FULL_ROUTE[FULL_ROUTE.length-1].lat,FULL_ROUTE[FULL_ROUTE.length-1].lon];
+  for(let i=1;i<FULL_ROUTE.length;i++){if(FULL_ROUTE[i].cumKm>=km){const a=FULL_ROUTE[i-1],b=FULL_ROUTE[i],t=(km-a.cumKm)/(b.cumKm-a.cumKm);return[a.lat+t*(b.lat-a.lat),a.lon+t*(b.lon-a.lon)]}}
+  return[FULL_ROUTE[FULL_ROUTE.length-1].lat,FULL_ROUTE[FULL_ROUTE.length-1].lon];
+}
+
+// ============================================================
+// ALL POINTS
+// ============================================================
+const ALL_POINTS=[
+  {name:{fr:"Départ",en:"Start"},km:0,idx:0,color:"#555",type:"start",isCross:false,cutoff:null},
+  {name:{fr:"Ravito 1",en:"Aid station 1"},km:5,idx:1,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
+  {name:{fr:"Ravito 2",en:"Aid station 2"},km:10,idx:2,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
+  {name:{fr:"Contrôle horaire",en:"Time control"},km:14,idx:3,color:"#B42318",type:"cutoff",isCross:false,cutoff:"08:30"},
+  {name:{fr:"Ravito 3",en:"Aid station 3"},km:15,idx:4,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
+  {name:{fr:"Ravito 4",en:"Aid station 4"},km:20,idx:5,color:"#7F77DD",type:"ravito",isCross:true,cutoff:null},
+  {name:{fr:"Ravito 5",en:"Aid station 5"},km:25,idx:6,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
+  {name:{fr:"Ravito 6",en:"Aid station 6"},km:30,idx:7,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
+  {name:{fr:"Ravito 7",en:"Aid station 7"},km:35,idx:8,color:"#1D9E75",type:"ravito",isCross:false,cutoff:"12:00"},
+  {name:{fr:"Ravito 8",en:"Aid station 8"},km:40,idx:9,color:"#7F77DD",type:"ravito",isCross:true,cutoff:null},
+  {name:{fr:"Ravito 9",en:"Aid station 9"},km:45,idx:10,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
+  {name:{fr:"Ravito 10",en:"Aid station 10"},km:55,idx:11,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
+  {name:{fr:"Contrôle horaire",en:"Time control"},km:56,idx:12,color:"#B42318",type:"cutoff",isCross:false,cutoff:"15:00"},
+  {name:{fr:"Demi-tour — Épagnette",en:"Turnaround — Épagnette"},km:57,idx:13,color:"#EF9F27",type:"turnaround",isCross:false,cutoff:null},
+  {name:{fr:"Ravito 11",en:"Aid station 11"},km:60,idx:14,color:"#7F77DD",type:"ravito",isCross:true,cutoff:null},
+  {name:{fr:"Ravito 12",en:"Aid station 12"},km:65,idx:15,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
+  {name:{fr:"Ravito 13",en:"Aid station 13"},km:70,idx:16,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
+  {name:{fr:"Ravito 14",en:"Aid station 14"},km:75,idx:17,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
+  {name:{fr:"Contrôle horaire",en:"Time control"},km:77,idx:18,color:"#B42318",type:"cutoff",isCross:false,cutoff:"18:00"},
+  {name:{fr:"Ravito 15",en:"Aid station 15"},km:80,idx:19,color:"#7F77DD",type:"ravito",isCross:true,cutoff:null},
+  {name:{fr:"Ravito 16",en:"Aid station 16"},km:85,idx:20,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
+  {name:{fr:"Ravito 17",en:"Aid station 17"},km:90,idx:21,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
+  {name:{fr:"Ravito 18",en:"Aid station 18"},km:95,idx:22,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
+  {name:{fr:"ARRIVÉE",en:"FINISH"},km:100.0,idx:23,color:"#378ADD",type:"finish",isCross:false,cutoff:null},
+];
+const SORTED=[...ALL_POINTS].sort((a,b)=>a.km-b.km);
+
+const NUTRI_ACTIONS={
+  fr:{
+    0:"🏁 Départ 6h30 — Prendre gourde G0 + gel Nutripure LD. Lampe frontale indispensable (nuit sur le chemin de halage).",
+    5:"Avaler le gel progressivement · boire G0 par petites gorgées",
+    10:"Continuer à boire G0",
+    14:"📍 Contrôle horaire — passage requis avant 8h30",
+    15:"Terminer G0 tranquillement avant l'échange",
+    20:"🔀 ÉCHANGE (suiveur vélo, dès le km 16) — Remettre G0 vide · récupérer G1 (500 mL Decathlon 1:0.8+Apurna) + gel",
+    25:"Avaler le gel progressivement · boire G1",
+    30:"Continuer à boire G1",
+    35:"Continuer à boire G1 · 📍 Contrôle horaire — passage requis avant 12h00",
+    40:"🔀 ÉCHANGE — Remettre G1 vide · récupérer G2 + gel",
+    45:"Avaler le gel · boire G2 · jour levé, ranger la frontale",
+    55:"Continuer à boire G2",
+    56:"📍 Contrôle horaire — passage requis avant 15h00",
+    57:"🔁 Demi-tour à Épagnette — vérifier l'allure et repartir vers Amiens",
+    60:"🔀 ÉCHANGE — Remettre G2 vide · récupérer G3 + gel",
+    65:"Avaler le gel · boire G3",
+    70:"Continuer à boire G3",
+    75:"Continuer à boire G3",
+    77:"📍 Contrôle horaire — passage requis avant 18h00 · plus que 23 km !",
+    80:"🔀 ÉCHANGE — Remettre G3 vide · récupérer G4 (dernière gourde) + gel",
+    85:"Avaler le gel · boire G4",
+    90:"Continuer à boire G4 · plus que 10 km !",
+    95:"Finir G4 · tenir le rythme jusqu'à l'arrivée",
+    100.0:"🏁 ARRIVÉE — Félicitations !"
+  },
+  en:{
+    0:"🏁 Start 06:30 — Take bottle B0 + Nutripure LD gel. Headlamp mandatory (dark on the towpath).",
+    5:"Take gel gradually · sip B0 steadily",
+    10:"Keep sipping B0",
+    14:"📍 Time control — must pass before 08:30",
+    15:"Finish B0 calmly before the handoff",
+    20:"🔀 HANDOFF (cyclist follower, from km 16) — Return empty B0 · collect B1 (500 mL Decathlon 1:0.8+Apurna) + gel",
+    25:"Take gel gradually · sip B1",
+    30:"Keep sipping B1",
+    35:"Keep sipping B1 · 📍 Time control — must pass before 12:00",
+    40:"🔀 HANDOFF — Return empty B1 · collect B2 + gel",
+    45:"Take gel · sip B2 · daylight now, stow the headlamp",
+    55:"Keep sipping B2",
+    56:"📍 Time control — must pass before 15:00",
+    57:"🔁 Turnaround at Épagnette — check your pace and head back to Amiens",
+    60:"🔀 HANDOFF — Return empty B2 · collect B3 + gel",
+    65:"Take gel · sip B3",
+    70:"Keep sipping B3",
+    75:"Keep sipping B3",
+    77:"📍 Time control — must pass before 18:00 · only 23 km left!",
+    80:"🔀 HANDOFF — Return empty B3 · collect B4 (last bottle) + gel",
+    85:"Take gel · sip B4",
+    90:"Keep sipping B4 · only 10 km left!",
+    95:"Finish B4 · hold your pace to the finish",
+    100.0:"🏁 FINISH — Congratulations!"
+  }
+};
+
+const PRESETS=[{mn:4,sc:30},{mn:4,sc:35},{mn:4,sc:40},{mn:4,sc:45},{mn:4,sc:50},{mn:5,sc:0}];
+
+function getPace(){return(parseInt(document.getElementById('pace-min').value)||4)+(parseInt(document.getElementById('pace-sec').value)||35)/60}
+function timeToMin(t){const[h,m]=t.split(':').map(Number);return h*60+m}
+function minToTime(m){
+  const d=((m%1440)+1440)%1440;
+  let h=Math.floor(d/60), mn=Math.round(d%60);
+  if(mn>=60){h+=1;mn=0;}
+  if(h>=24)h=0;
+  return String(h).padStart(2,'0')+':'+String(mn).padStart(2,'0');
+}
+function fmtDur(m){
+  let h=Math.floor(m/60), mn=Math.round(m%60);
+  if(mn>=60){h+=1;mn=0;}
+  return h+'h'+String(mn).padStart(2,'0');
+}
+function fmtPace(p){
+  let mn=Math.floor(p), s=Math.round((p-mn)*60);
+  if(s>=60){mn+=1;s=0;}
+  return mn+"'"+String(s).padStart(2,'0')+'"';
+}
+function calcPassage(km,pace,fade,fadeStart){const f=fade/100,fs=Math.min(fadeStart,km);const t1=pace*Math.min(km,fs);if(km<=fs)return t1;const rem=100-fs,x=km-fs;return t1+pace*(x+f*x*x/(2*(rem||1)))}
+function getParams(){return{start:timeToMin(document.getElementById('start-time').value),pace:getPace(),fade:parseFloat(document.getElementById('fade').value)||0,fadeStart:parseFloat(document.getElementById('fade-start').value)||0}}
+function highlightPreset(){const mn=parseInt(document.getElementById('pace-min').value)||0,sc=parseInt(document.getElementById('pace-sec').value)||0;document.querySelectorAll('.preset-btn').forEach((b,i)=>b.classList.toggle('active-preset',PRESETS[i].mn===mn&&PRESETS[i].sc===sc))}
+function setPreset(mn,sc){document.getElementById('pace-min').value=mn;document.getElementById('pace-sec').value=String(sc).padStart(2,'0');highlightPreset();compute()}
+function updateFadeInfo(){
+  const fade=parseFloat(document.getElementById('fade').value)||0,fs=parseFloat(document.getElementById('fade-start').value)||0,el=document.getElementById('fade-info');
+  if(!fade){el.style.display='none';return}
+  el.style.display='block';
+  const lang=currentLang;
+  if(lang==='fr') el.textContent=fs===0?`ℹ️ Ralentissement de ${fade}% progressif dès le km 0.`:`ℹ️ Allure constante km 0 → km ${fs}, puis ralentissement progressif de ${fade}% sur les ${100-fs} km restants.`;
+  else el.textContent=fs===0?`ℹ️ Slowdown of ${fade}% applied progressively from km 0.`:`ℹ️ Constant pace km 0 → km ${fs}, then progressive slowdown of ${fade}% over the remaining ${100-fs} km.`;
+}
+
+function getName(r){return typeof r.name==='object'?r.name[currentLang]:r.name}
+function rowClass(r){return r.type==='cutoff'?'cutoff-row':r.type==='start'?'depart-row':r.type==='turnaround'?'turn-row':r.isCross?'crossover-row':''}
+function badgeFor(r){
+  if(r.type==='start')return`<span class="badge b0">${currentLang==='fr'?'Départ':'Start'}</span>`;
+  if(r.type==='cutoff')return`<span class="badge-cutoff">📍 ${currentLang==='fr'?'Contrôle horaire':'Time control'}</span>`;
+  if(r.type==='turnaround')return`<span class="badge b2">🔁 ${currentLang==='fr'?'Demi-tour':'Turnaround'}</span>`;
+  if(r.type==='finish')return`<span class="badge b3">${currentLang==='fr'?'Arrivée':'Finish'}</span>`;
+  return`<span class="badge b1">${currentLang==='fr'?'Ravito':'Aid'}</span>`;
+}
+function triFor(r){return r.isCross?`<svg width="10" height="10" viewBox="0 0 10 10" style="vertical-align:middle;margin-right:3px"><polygon points="5,0.5 9.5,9.5 0.5,9.5" fill="#7F77DD"/></svg>`:''}
+function cutoffCell(r,arrivalAbsMin){
+  if(!r.cutoff)return'<span style="color:#ccc">—</span>';
+  const limitMin=timeToMin(r.cutoff);
+  const margin=limitMin-((arrivalAbsMin%1440+1440)%1440);
+  return margin>=0?`<span style="color:#085041;font-weight:600">✅ +${fmtDur(margin)}</span>`:`<span style="color:#B42318;font-weight:600">⚠️ -${fmtDur(-margin)}</span>`;
+}
+
+// ============================================================
+// LEAFLET
+// ============================================================
+let leafletMap=null,routeLayer=null,posMarker=null,mapInitialized=false;
+function initMap(){
+  if(mapInitialized)return;mapInitialized=true;
+  leafletMap=L.map('parcours-map').setView([49.94,2.10],11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:18}).addTo(leafletMap);
+  routeLayer=L.polyline(GPX_TRACK,{color:'#1D9E75',weight:4,opacity:0.85}).addTo(leafletMap);
+  function addArrows(pts,color){const step=Math.max(1,Math.floor(pts.length/24));for(let i=step;i<pts.length-1;i+=step){const a=pts[i-1],b=pts[i];const angle=Math.atan2(b[1]-a[1],b[0]-a[0])*180/Math.PI;L.marker([b[0],b[1]],{icon:L.divIcon({className:'',html:`<div style="transform:rotate(${angle-90}deg);color:${color};font-size:13px;opacity:.55">▶</div>`,iconSize:[13,13],iconAnchor:[6,6]}),interactive:false}).addTo(leafletMap)}}
+  addArrows(GPX_TRACK,'#1D9E75');
+  function mkIcon(html,size,anchor){return L.divIcon({className:'',html,iconSize:size,iconAnchor:anchor||[size[0]/2,size[1]/2]})}
+  const startLL=latLonAtKm(0);
+  L.marker(startLL,{icon:mkIcon(`<div style="background:#555;color:white;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;border:2px solid white;box-shadow:0 1px 5px rgba(0,0,0,.4)">S</div>`,[22,22])}).bindPopup('<b>🏁 Départ / Start · Arrivée / Finish</b><br>Parc du Grand Marais, Amiens · 06:30').addTo(leafletMap);
+  const turn=SORTED.find(r=>r.type==='turnaround');
+  if(turn){
+    const tll=latLonAtKm(turn.km);
+    L.marker(tll,{icon:mkIcon(`<div style="background:#EF9F27;border-radius:50%;width:16px;height:16px;border:3px solid white;box-shadow:0 0 0 2px #EF9F27,0 2px 6px rgba(0,0,0,.35)"></div>`,[16,16])}).bindPopup(`<b>🔁 ${getName(turn)}</b><br><small>km ${turn.km}</small>`).addTo(leafletMap);
+  }
+  SORTED.forEach(r=>{
+    if(r.type!=='ravito')return;
+    const ll=latLonAtKm(r.km);
+    if(r.isCross){
+      L.marker(ll,{icon:mkIcon(`<div style="width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-bottom:16px solid #7F77DD;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4))"></div>`,[18,16],[9,16])}).bindPopup(`<b>🔀 ${getName(r)}</b><br><small>km ${r.km} — ${currentLang==='fr'?'Échange gourde suiveur':'Bottle handoff'}</small>`).addTo(leafletMap);
+    }else{
+      L.marker(ll,{icon:mkIcon(`<div style="background:#1D9E75;border-radius:50%;width:11px;height:11px;border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,.35)"></div>`,[11,11])}).bindPopup(`<b>${getName(r)}</b><br><small>km ${r.km}</small>`).addTo(leafletMap);
+    }
+  });
+  posMarker=L.marker(startLL,{icon:mkIcon(`<div style="background:#e63946;border-radius:50%;width:16px;height:16px;border:3px solid white;box-shadow:0 0 0 2px #e63946,0 2px 6px rgba(0,0,0,.4)"></div>`,[16,16]),zIndexOffset:1000}).addTo(leafletMap);
+  fitAll();
+}
+function fitAll(){if(leafletMap)leafletMap.fitBounds(L.latLngBounds(GPX_TRACK),{padding:[20,20]})}
+
+// ============================================================
+// COMPUTE
+// ============================================================
+function compute(){
+  const{start,pace,fade,fadeStart}=getParams();
+  const total=calcPassage(100,pace,fade,fadeStart);
+  document.getElementById('s-time').textContent=fmtDur(total);
+  document.getElementById('s-pace').textContent=fmtPace(total/100)+'/km';
+  document.getElementById('s-finish').textContent=minToTime(start+total);
+  const finishTime = minToTime(start+total);
+  const startTimeFmt = minToTime(start);
+  const startFR = String(Math.floor(timeToMin(document.getElementById('start-time').value)/60)).padStart(2,'0')+'h'+String(timeToMin(document.getElementById('start-time').value)%60).padStart(2,'0');
+  const elFR = document.getElementById('nutri-finish-fr');
+  const elEN = document.getElementById('nutri-finish-en');
+  const elSFR = document.getElementById('nutri-start-fr');
+  const elSEN = document.getElementById('nutri-start-en');
+  if(elFR) elFR.textContent = finishTime;
+  if(elEN) elEN.textContent = finishTime;
+  if(elSFR) elSFR.textContent = startFR;
+  if(elSEN) elSEN.textContent = startTimeFmt;
+  highlightPreset();updateFadeInfo();
+  const tbody=document.getElementById('passage-body');tbody.innerHTML='';
+  let prevKm=0,prevMin=0;
+  SORTED.forEach(r=>{
+    const cum=calcPassage(r.km,pace,fade,fadeStart);
+    const segK=r.km-prevKm,segM=cum-prevMin,segP=segK>0?segM/segK:0;
+    const timeCell=r.km===0?`<td>—</td><td style="font-weight:600">${minToTime(start)}</td><td>—</td>`:`<td>${fmtDur(cum)}</td><td style="font-weight:600">${minToTime(start+cum)}</td><td style="color:#aaa">${fmtPace(segP)}</td>`;
+    const coCell=cutoffCell(r,start+cum);
+    tbody.innerHTML+=`<tr class="${rowClass(r)}"><td>${triFor(r)}${badgeFor(r)} ${getName(r)}</td><td>${r.km===0?'0':r.km.toFixed(1)}</td>${timeCell}<td>${coCell}</td></tr>`;
+    prevKm=r.km;prevMin=cum;
+  });
+  updateMapTable();updateNutriTable();updateSlider();
+  setTimeout(()=>{if(typeof updateSuivi==='function'&&typeof realSpeeds!=='undefined')updateSuivi();},0);
+}
+
+function updateMapTable(){
+  const{start,pace,fade,fadeStart}=getParams();
+  const tbody=document.getElementById('map-body');tbody.innerHTML='';
+  let prevMin=0;
+  SORTED.forEach(r=>{
+    const cum=calcPassage(r.km,pace,fade,fadeStart);const delta=cum-prevMin;
+    let tc='';
+    const lang=currentLang;
+    if(r.type==='start')tc=`<span class="badge b0">${lang==='fr'?'Départ':'Start'}</span>`;
+    else if(r.type==='cutoff')tc=`<span class="badge-cutoff">📍 ${lang==='fr'?'Contrôle':'Control'}</span>`;
+    else if(r.type==='turnaround')tc=`<span class="badge b2">🔁 ${lang==='fr'?'Demi-tour':'Turnaround'}</span>`;
+    else if(r.type==='finish')tc=`<span class="badge b3">${lang==='fr'?'Arrivée':'Finish'}</span>`;
+    else if(r.isCross)tc=`<span style="display:inline-flex;align-items:center;gap:4px"><svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,0.5 9.5,9.5 0.5,9.5" fill="#7F77DD"/></svg><span style="font-size:11px;color:#534AB7;font-weight:600">${lang==='fr'?'Échange gourde':'Bottle handoff'}</span></span>`;
+    else tc=`<span class="badge b1">${lang==='fr'?'Ravito':'Aid'}</span>`;
+    const t=r.km===0?minToTime(start):minToTime(start+cum);
+    const d=r.km===0?'—':'+'+fmtDur(delta);
+    const rc=r.isCross?'handoff-row':rowClass(r);
+    tbody.innerHTML+=`<tr class="${rc}"><td>${getName(r)}</td><td>${r.km===0?'0':r.km.toFixed(1)}</td><td>${tc}</td><td style="font-weight:600">${t}</td><td style="color:#aaa">${d}</td></tr>`;
+    prevMin=cum;
+  });
+}
+
+function updateNutriTable(){
+  const{start,pace,fade,fadeStart}=getParams();
+  const lang=currentLang;
+  const actions=NUTRI_ACTIONS[lang];
+  const tbodyFr=document.getElementById('nutri-body-fr');
+  const tbodyEn=document.getElementById('nutri-body-en');
+  if(tbodyFr)tbodyFr.innerHTML='';
+  if(tbodyEn)tbodyEn.innerHTML='';
+  SORTED.forEach(r=>{
+    const cum=calcPassage(r.km,pace,fade,fadeStart);
+    const t=r.km===0?minToTime(start):minToTime(start+cum);
+    const kmKey=Object.keys(actions).find(k=>Math.abs(parseFloat(k)-r.km)<0.01);
+    const actionFr=(NUTRI_ACTIONS.fr[kmKey]||'—');
+    const actionEn=(NUTRI_ACTIONS.en[kmKey]||'—');
+    const rc=r.isCross?'handoff-row':rowClass(r);
+    const color=r.isCross?'#534AB7':r.type==='cutoff'?'#B42318':'#555';
+    const rowFr=`<tr class="${rc}"><td>${getName(r)}</td><td>${r.km===0?'0':r.km.toFixed(1)}</td><td style="font-weight:600">${t}</td><td style="font-size:12px;color:${color}">${actionFr}</td></tr>`;
+    const rowEn=`<tr class="${rc}"><td>${typeof r.name==='object'?r.name.en:r.name}</td><td>${r.km===0?'0':r.km.toFixed(1)}</td><td style="font-weight:600">${t}</td><td style="font-size:12px;color:${color}">${actionEn}</td></tr>`;
+    if(tbodyFr)tbodyFr.innerHTML+=rowFr;
+    if(tbodyEn)tbodyEn.innerHTML+=rowEn;
+  });
+}
+
+function updateSlider(){
+  const km=parseFloat(document.getElementById('km-slider').value);
+  const{start,pace,fade,fadeStart}=getParams();
+  const cum=calcPassage(km,pace,fade,fadeStart);
+  const arr=km===0?minToTime(start):minToTime(start+cum);
+  document.getElementById('sl-km').textContent='km '+km.toFixed(1);
+  document.getElementById('sl-time').textContent=arr;
+  const tt=document.getElementById('tooltip-km');
+  tt.textContent='km '+km.toFixed(1)+' → '+arr;
+  tt.style.left=Math.max(5,Math.min(93,km))+'%';
+  const next=SORTED.find(r=>r.km>km);
+  document.getElementById('sl-next').textContent=next?(next.type==='cutoff'?'📍 ':next.isCross?'🔀 ':next.type==='turnaround'?'🔁 ':'')+getName(next)+' (km '+next.km.toFixed(1)+')':'Arrivée / Finish';
+  if(posMarker){const[lat,lon]=latLonAtKm(km);posMarker.setLatLng([lat,lon])}
+}
+
+function showTab(name,event){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if(event&&event.target)event.target.closest('.tab').classList.add('active');
+  if(name==='carte'){initMap();setTimeout(()=>{if(leafletMap)leafletMap.invalidateSize()},100)}
+  if(name==='suivi'){updateSuivi();}
+  try{localStorage.setItem('vds_tab',name);}catch(e){}
+}
+
+document.getElementById('start-time').oninput=compute;
+document.getElementById('fade').oninput=compute;
+document.getElementById('fade-start').oninput=compute;
+document.getElementById('pace-min').oninput=()=>{highlightPreset();compute()};
+document.getElementById('pace-sec').oninput=()=>{highlightPreset();compute()};
+document.getElementById('pace-sec').onblur=()=>{const v=parseInt(document.getElementById('pace-sec').value)||0;document.getElementById('pace-sec').value=String(Math.min(59,v)).padStart(2,'0')};
+
+compute();
+
+// ============================================================
+// SUIVI LIVE
+// ============================================================
+
+const TRACKED_KMS = SORTED.filter(r=>r.type==='ravito'||r.type==='finish').map(r=>r.km);
+
+function isTracked(r) {
+  return TRACKED_KMS.some(k => Math.abs(k - r.km) < 0.01);
+}
+
+// ---- Persistence ----
+function saveToStorage() {
+  try { localStorage.setItem('vds_speeds', JSON.stringify(realSpeeds)); } catch(e) {}
+}
+function loadFromStorage() {
+  try {
+    const d = localStorage.getItem('vds_speeds');
+    if (d) realSpeeds = JSON.parse(d);
+  } catch(e) {}
+}
+
+function onSpeedEnter(km, evt) {
+  if (evt.key === 'Enter' || evt.type === 'blur') {
+    const inp = evt.target;
+    const raw = inp.value.replace(',', '.').trim();
+    const val = parseFloat(raw);
+    const key = km.toFixed(3);
+    if (!isNaN(val) && val > 0 && val < 40) {
+      realSpeeds[key] = val;
+      inp.value = val.toFixed(1);
+      inp.style.borderColor = '#1D9E75';
+      inp.style.background = '#f0faf5';
+      inp.style.fontWeight = '600';
+      inp.style.color = '#085041';
+    } else if (raw === '') {
+      delete realSpeeds[key];
+      inp.style.borderColor = '#ddd';
+      inp.style.background = '#fff';
+      inp.style.fontWeight = '400';
+      inp.style.color = '#333';
+    }
+    saveToStorage();
+    updateSuivi();
+  }
+}
+
+function getSpeedForKm(km) {
+  return realSpeeds[km.toFixed(3)];
+}
+
+// Predict arrival time at any km using real speeds (forward AND backward)
+function predictArrival(targetKm) {
+  const { start, pace, fade, fadeStart } = getParams();
+
+  const checkpoints = [
+    { km: 0 },
+    ...SORTED.filter(r => r.type === 'ravito' || r.type === 'finish')
+  ].sort((a, b) => a.km - b.km);
+
+  const knownKms = Object.keys(realSpeeds).map(parseFloat).sort((a,b)=>a-b);
+  const firstKnownKm = knownKms.length > 0 ? knownKms[0] : null;
+
+  let t = start;
+  let prevKm = 0;
+
+  for (let i = 1; i < checkpoints.length; i++) {
+    const cp = checkpoints[i];
+    if (cp.km > targetKm) break;
+
+    const segKm = cp.km - prevKm;
+    const spd = getSpeedForKm(cp.km);
+
+    if (spd && spd > 0) {
+      t += (segKm / spd) * 60;
+    } else if (firstKnownKm !== null && cp.km <= firstKnownKm) {
+      const firstSpd = realSpeeds[firstKnownKm.toFixed(3)];
+      t += (segKm / firstSpd) * 60;
+    } else {
+      let lastSpd = null;
+      for (const k of knownKms) {
+        if (k <= cp.km) lastSpd = realSpeeds[k.toFixed(3)];
+      }
+      if (lastSpd) {
+        t += (segKm / lastSpd) * 60;
+      } else {
+        t += calcPassage(cp.km, pace, fade, fadeStart) - calcPassage(prevKm, pace, fade, fadeStart);
+      }
+    }
+    prevKm = cp.km;
+  }
+
+  if (prevKm < targetKm) {
+    const segKm = targetKm - prevKm;
+    let lastSpd = null;
+    for (const k of knownKms) {
+      if (k <= prevKm) lastSpd = realSpeeds[k.toFixed(3)];
+    }
+    if (lastSpd) t += (segKm / lastSpd) * 60;
+    else t += calcPassage(targetKm, pace, fade, fadeStart) - calcPassage(prevKm, pace, fade, fadeStart);
+  }
+
+  return t;
+}
+
+function updateSuivi() {
+  const { start, pace, fade, fadeStart } = getParams();
+  const knownKms = Object.keys(realSpeeds).map(parseFloat).sort((a,b)=>a-b);
+  const hasAnyReal = knownKms.length > 0;
+
+  const finTime = predictArrival(100);
+  document.getElementById('sv-finish').textContent = minToTime(finTime);
+  document.getElementById('sv-total').textContent = fmtDur(finTime - start);
+
+  const lastKnownKm = hasAnyReal ? knownKms[knownKms.length-1] : null;
+  if (lastKnownKm !== null) {
+    const spd = realSpeeds[lastKnownKm.toFixed(3)];
+    document.getElementById('sv-pace').textContent = fmtPace(60 / spd) + '/km';
+  } else {
+    document.getElementById('sv-pace').textContent = fmtPace(calcPassage(100,pace,fade,fadeStart)/100) + '/km';
+  }
+
+  const tbody = document.getElementById('suivi-tbody');
+  const savedInputs = {};
+  tbody.querySelectorAll('input[data-km]').forEach(inp => { savedInputs[inp.dataset.km] = inp.value; });
+  tbody.innerHTML = '';
+
+  let prevKm = 0, prevPredMin = start;
+
+  SORTED.forEach(r => {
+    const predTime = r.km === 0 ? start : predictArrival(r.km);
+    const predStr = minToTime(predTime);
+    const elapsed = r.km === 0 ? '—' : fmtDur(predTime - start);
+
+    const segKm = r.km - prevKm;
+    const segMin = r.km === 0 ? 0 : predTime - prevPredMin;
+    const segPace = (r.km > 0 && segKm > 0 && segMin > 0) ? fmtPace(segMin / segKm) : '—';
+
+    const realSpd = getSpeedForKm(r.km);
+    const isRetro = hasAnyReal && !realSpd && r.km > 0 && knownKms[0] > r.km;
+    const isFwd   = hasAnyReal && !realSpd && r.km > 0 && !isRetro;
+    const isUpdated = isRetro || isFwd;
+
+    const rc = rowClass(r);
+    const timeStyle = realSpd
+      ? 'font-weight:600;color:#085041'
+      : isUpdated ? 'font-weight:600;color:#2563C4'
+      : 'font-weight:600';
+    const updMark = isUpdated
+      ? ` <span style="color:#2563C4;font-size:10px" title="${isRetro ? 'rétroactif' : 'extrapolé'}">↻</span>`
+      : '';
+
+    const timeCell = r.km === 0
+      ? `<td>—</td><td style="${timeStyle}">${predStr}</td><td>—</td>`
+      : `<td>${elapsed}</td><td style="${timeStyle}">${predStr}${updMark}</td><td style="color:#aaa">${segPace}</td>`;
+
+    const coCell = cutoffCell(r, predTime);
+
+    let speedCell = '<td></td>';
+    if (isTracked(r)) {
+      const kmKey = r.km.toFixed(3);
+      const savedVal = savedInputs[kmKey] !== undefined ? savedInputs[kmKey] : (realSpd ? realSpd.toFixed(1) : '');
+      const modelSpd = (segKm > 0 && segMin > 0) ? (segKm / segMin * 60).toFixed(1) : '';
+      const bColor = realSpd ? '#1D9E75' : '#ddd';
+      const bg     = realSpd ? '#f0faf5' : '#fff';
+      const fw     = realSpd ? '600' : '400';
+      const fc     = realSpd ? '#085041' : '#333';
+      speedCell = `<td><input type="text" inputmode="decimal" data-km="${kmKey}"
+        value="${savedVal}" placeholder="${modelSpd}"
+        onkeydown="onSpeedEnter(${r.km},event)"
+        onblur="onSpeedEnter(${r.km},event)"
+        style="width:72px;font-size:13px;border:1px solid ${bColor};border-radius:5px;padding:4px 6px;text-align:center;background:${bg};font-weight:${fw};color:${fc}" /></td>`;
+    }
+
+    tbody.innerHTML += `<tr class="${isUpdated ? '' : rc}" style="${isRetro ? 'background:#FFF8E6' : isFwd ? 'background:#EEF4FF' : ''}">
+      <td>${triFor(r)}${badgeFor(r)} ${getName(r)}</td>
+      <td>${r.km === 0 ? '0' : r.km.toFixed(1)}</td>
+      ${timeCell}
+      <td>${coCell}</td>
+      ${speedCell}
+    </tr>`;
+
+    if (r.km > 0) { prevKm = r.km; prevPredMin = predTime; }
+  });
+}
+
+// Load saved speeds on startup
+loadFromStorage();
+// Restore last active tab
+try {
+  const savedTab = localStorage.getItem('vds_tab');
+  if (savedTab && document.getElementById('tab-'+savedTab)) {
+    const btn = document.querySelector('.tab[onclick*=\''+savedTab+'\']');
+    showTab(savedTab, btn ? {target: btn} : {});
+  }
+} catch(e) {}
+
+updateSuivi();
+</script>
+</body>
+</html>
