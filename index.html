@@ -24,6 +24,7 @@ label{font-size:12px;color:#777;display:block;margin-bottom:5px;margin-top:14px;
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:4px}
 .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
 .row4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+@media (max-width:480px){.row3,.row4{grid-template-columns:1fr 1fr}}
 .metric{background:#f7f7f7;border-radius:8px;padding:12px 14px;border:1px solid #efefef}
 .metric .val{font-size:20px;font-weight:600;margin-top:4px;color:#111}
 .metric .lbl{font-size:11px;color:#999;font-weight:500}
@@ -43,6 +44,8 @@ input[type=range]{width:100%;margin:8px 0;accent-color:#1D9E75}
 .preset-btn:hover{background:#f5f5f5;border-color:#bbb}
 .preset-btn.active-preset{background:#1D9E75;border-color:#1D9E75;color:#fff}
 .fade-info{font-size:12px;color:#666;background:#f7f7f7;border:1px solid #eaeaea;border-radius:7px;padding:8px 11px;margin:8px 0 4px;line-height:1.5}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:10px}
+.table-wrap table{margin-top:0}
 table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
 th{font-size:11px;font-weight:600;color:#999;text-align:left;padding:7px 9px;border-bottom:1px solid #eee;background:#fafafa}
 td{padding:7px 9px;border-bottom:1px solid #f2f2f2}
@@ -203,7 +206,7 @@ body.lang-en .legend .en-inline{display:inline !important}
       </div>
     </div>
     <div class="info-box">⏱ <span class="fr-inline"><strong>Temps limite officiel : 15h</strong> (arrivée au plus tard à 21h30). Barrières horaires : km 14 avant 8h30 · km 35 avant 12h00 · km 56 avant 15h00 · km 77 avant 18h00.</span><span class="en-inline"><strong>Official time limit: 15h</strong> (finish by 21:30 at the latest). Cutoffs: km 14 before 08:30 · km 35 before 12:00 · km 56 before 15:00 · km 77 before 18:00.</span></div>
-    <table>
+    <div class="table-wrap"><table>
       <thead>
         <tr>
           <th><span class="fr-inline">Point</span><span class="en-inline">Checkpoint</span></th>
@@ -215,7 +218,7 @@ body.lang-en .legend .en-inline{display:inline !important}
         </tr>
       </thead>
       <tbody id="passage-body"></tbody>
-    </table>
+    </table></div>
   </div>
 
   <!-- CARTE / MAP -->
@@ -241,7 +244,7 @@ body.lang-en .legend .en-inline{display:inline !important}
       <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#EF9F27;border:2px solid white;box-shadow:0 0 0 1px #EF9F27"></span><span class="fr-inline">Demi-tour Épagnette</span><span class="en-inline">Épagnette turnaround</span></span>
       <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#e63946;border:2px solid white;box-shadow:0 0 0 1px #e63946"></span><span class="fr-inline">Votre position</span><span class="en-inline">Your position</span></span>
     </div>
-    <table style="margin-top:12px">
+    <div class="table-wrap" style="margin-top:12px"><table>
       <thead>
         <tr>
           <th><span class="fr-inline">Point</span><span class="en-inline">Checkpoint</span></th>
@@ -252,7 +255,7 @@ body.lang-en .legend .en-inline{display:inline !important}
         </tr>
       </thead>
       <tbody id="map-body"></tbody>
-    </table>
+    </table></div>
   </div>
 
   <!-- NUTRITION -->
@@ -371,10 +374,10 @@ body.lang-en .legend .en-inline{display:inline !important}
       <div class="warning-box">⚠️ <strong>Chemin de halage non éclairé</strong> — la frontale est indispensable tant que le jour n'est pas levé. Les coureurs de plus de 12h de course (et leur suiveur) doivent aussi prévoir une frontale pour la fin du parcours (nuit qui retombe). Règle d'or : ne rien tester de nouveau le jour J, valider ce plan sur une sortie longue avant la course.</div>
 
       <div class="section-title">🗓 Tableau de bord par point de passage</div>
-      <table>
+      <div class="table-wrap"><table>
         <thead><tr><th>Point</th><th>Km</th><th>Heure</th><th>Action</th></tr></thead>
         <tbody id="nutri-body-fr"></tbody>
-      </table>
+      </table></div>
 
       <div class="section-title">✅ Check-list matériel</div>
 
@@ -552,10 +555,10 @@ body.lang-en .legend .en-inline{display:inline !important}
       <div class="warning-box">⚠️ <strong>Unlit towpath</strong> — a headlamp is mandatory until sunrise. Runners over 12h (and their follower) must also carry a headlamp for the end of the course as darkness returns. Golden rule: test nothing new on race day, validate this plan on a long training run beforehand.</div>
 
       <div class="section-title">🗓 Checkpoint dashboard</div>
-      <table>
+      <div class="table-wrap"><table>
         <thead><tr><th>Checkpoint</th><th>Km</th><th>Time</th><th>Action</th></tr></thead>
         <tbody id="nutri-body-en"></tbody>
-      </table>
+      </table></div>
 
       <div class="section-title">✅ Gear checklist</div>
 
@@ -635,7 +638,7 @@ body.lang-en .legend .en-inline{display:inline !important}
       <span><span style="color:#888;font-size:11px">→ <span class="fr-inline">Entrer la vitesse (km/h) et appuyer sur Entrée</span><span class="en-inline">Enter speed (km/h) and press Enter</span></span></span>
     </div>
 
-    <table>
+    <div class="table-wrap"><table>
       <thead>
         <tr>
           <th><span class="fr-inline">Point</span><span class="en-inline">Checkpoint</span></th>
@@ -648,7 +651,7 @@ body.lang-en .legend .en-inline{display:inline !important}
         </tr>
       </thead>
       <tbody id="suivi-tbody"></tbody>
-    </table>
+    </table></div>
   </div>
 
   <!-- INFOS COURSE -->
@@ -1086,7 +1089,9 @@ function updateSlider(){
   document.getElementById('sl-time').textContent=arr;
   const tt=document.getElementById('tooltip-km');
   tt.textContent='km '+km.toFixed(1)+' → '+arr;
-  tt.style.left=Math.max(5,Math.min(93,km))+'%';
+  const clampedPct=Math.max(0,Math.min(100,km));
+  tt.style.left=clampedPct+'%';
+  tt.style.transform=clampedPct<8?'translateX(0%)':clampedPct>92?'translateX(-100%)':'translateX(-50%)';
   const next=SORTED.find(r=>r.km>km);
   document.getElementById('sl-next').textContent=next?(next.type==='cutoff'?'📍 ':next.isCross?'🔀 ':next.type==='turnaround'?'🔁 ':'')+getName(next)+' (km '+next.km.toFixed(1)+')':'Arrivée / Finish';
   if(posMarker){const[lat,lon]=latLonAtKm(km);posMarker.setLatLng([lat,lon])}
