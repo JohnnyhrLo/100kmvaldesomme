@@ -71,7 +71,7 @@ tr:hover td{background:#fafafa}
 .nutri-card h4{font-size:13px;font-weight:600;margin-bottom:10px}
 .nutri-row{display:flex;justify-content:space-between;align-items:flex-start;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.06);font-size:12px;gap:12px}
 .nutri-row:last-child{border:none}
-.nutri-row .val{font-weight:600;color:#333;white-space:nowrap;text-align:right}
+.nutri-row .val{font-weight:600;color:#333;text-align:right}
 .nutri-row .lbl{color:#555;flex:1}
 .boucle-card{background:#fff;border:1.5px solid #1D9E75;border-radius:10px;padding:14px;margin-bottom:10px}
 .boucle-card h4{font-size:13px;font-weight:600;color:#085041;margin-bottom:10px}
@@ -127,8 +127,8 @@ body.lang-en .legend .en-inline{display:inline !important}
   <div class="header-wrap">
     <div class="header-left">
       <h1>100 km du Val de Somme</h1>
-      <div class="sub fr">3 octobre 2026 · Départ 06h30 · Amiens (Parc du Grand Marais) · Aller-retour · Ravitos ~tous les 5 km</div>
-      <div class="sub en">3 October 2026 · Start 06:30 · Amiens (Parc du Grand Marais) · Out-and-back · Aid stations ~every 5 km</div>
+      <div class="sub fr">3 octobre 2026 · Départ 06h30 · Amiens (Parc du Grand Marais) · Aller-retour · 20 ravitos officiels</div>
+      <div class="sub en">3 October 2026 · Start 06:30 · Amiens (Parc du Grand Marais) · Out-and-back · 20 official aid stations</div>
     </div>
     <div class="lang-toggle">
       <button class="lang-btn active" onclick="setLang('fr',this)">🇫🇷 FR</button>
@@ -224,8 +224,8 @@ body.lang-en .legend .en-inline{display:inline !important}
   <!-- CARTE / MAP -->
   <div id="tab-carte" class="panel">
     <div class="gpx-note">
-      <span class="fr-inline">🗺 Tracé GPX officiel (OpenRunner) — parcours aller-retour Amiens ↔ Épagnette, mesuré à 100,0 km. Les points de ravitaillement affichés sont des estimations tous les ~5 km, à confirmer avec le plan définitif de l'organisation.</span>
-      <span class="en-inline">🗺 Official GPX track (OpenRunner) — out-and-back course Amiens ↔ Épagnette, measured at 100.0 km. Aid station markers shown are estimates every ~5 km, to confirm against the organizer's final plan.</span>
+      <span class="fr-inline">🗺 Tracé GPX officiel (OpenRunner) et 20 points de ravitaillement officiels (fiche organisation) — parcours aller-retour Amiens ↔ Épagnette, mesuré à 100,0 km. Détection chronométrique des dossards à chaque ravito (sauf Yzeux), résultats live sur my.raceresult.com.</span>
+      <span class="en-inline">🗺 Official GPX track (OpenRunner) and 20 official aid stations (organizer sheet) — out-and-back course Amiens ↔ Épagnette, measured at 100.0 km. Bib timing detection at every aid station (except Yzeux), live results on my.raceresult.com.</span>
     </div>
     <div id="parcours-map"></div>
     <label style="margin-top:4px"><span class="fr-inline">Votre position sur le parcours</span><span class="en-inline">Your position on the course</span></label>
@@ -280,21 +280,22 @@ body.lang-en .legend .en-inline{display:inline !important}
       <div class="section-title">🚲 Logistique — Suiveur vélo</div>
       <div class="nutri-card card-purple">
         <h4>Points de rendez-vous pour ton suiveur</h4>
-        <div class="nutri-row"><span class="lbl"><strong>km 15</strong> — Ravito 3 (pas encore de suiveur)</span><span class="val">Récupérer G1 via ton bac de ravitaillement personnel · laisser G0 vide</span></div>
-        <div class="nutri-row"><span class="lbl"><strong>km 16</strong> — Autorisation officielle</span><span class="val">Le suiveur peut rejoindre le parcours à vélo</span></div>
-        <div class="nutri-row"><span class="lbl"><strong>km 30</strong> — Ravito 6 🔀</span><span class="val">Remettre G2 + gel · récupérer G1 vide</span></div>
-        <div class="nutri-row"><span class="lbl"><strong>km 45</strong> — Ravito 9 🔀</span><span class="val">Remettre G3 + gel · récupérer G2 vide</span></div>
-        <div class="nutri-row"><span class="lbl"><strong>km 60</strong> — Ravito 11 🔀</span><span class="val">Remettre G4 + gel · récupérer G3 vide</span></div>
-        <div class="nutri-row"><span class="lbl"><strong>km 75</strong> — Ravito 14 🔀</span><span class="val">Remettre G5 + gel · récupérer G4 vide</span></div>
-        <div class="nutri-row"><span class="lbl"><strong>km 90</strong> — Ravito 17 🔀</span><span class="val">Remettre G6 (dernière) + gel · récupérer G5 vide</span></div>
-        <div class="nutri-row"><span class="lbl"><strong>km 100</strong> — Arrivée 🏁</span><span class="val">Récupérer G6 vide 🎉</span></div>
-        <div style="margin-top:8px;font-size:11px;color:#666;line-height:1.6">⚠️ Un seul vélo sur le circuit à la fois (relais possible entre plusieurs suiveurs). Casque recommandé, téléphone conseillé. Ne pas abriter le coureur. Accès aux zones de ravito réservé aux suiveurs accrédités (dossard suiveur obligatoire). Le suiveur n'étant autorisé qu'à partir du km 16, l'échange du km 15 passe par le bac de ravitaillement personnel plutôt que par le vélo.</div>
+        <div class="nutri-row"><span class="lbl"><strong>km 15</strong> — Autorisation officielle</span><span class="val">Le suiveur peut rejoindre le parcours à vélo (dossard suiveur barré sur le devant)</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 19,0</strong> — Ailly-sur-Somme 🔀</span><span class="val">Remettre G1 + gel · récupérer G0 vide</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 31,5</strong> — Bourdon 🔀</span><span class="val">Remettre G2 + gel · récupérer G1 vide</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 46,0</strong> — Long 🔀</span><span class="val">Remettre G3 + gel · récupérer G2 vide</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 56,8</strong> — Épagnette</span><span class="val">Demi-tour (pas d'échange ici, juste après à Pont-Rémy)</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 62,2</strong> — Pont-Rémy (retour) 🔀</span><span class="val">Remettre G4 + gel · récupérer G3 vide</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 77,4</strong> — Flixecourt (retour) 🔀</span><span class="val">Remettre G5 + gel · récupérer G4 vide</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 89,3</strong> — Picquigny (retour) 🔀</span><span class="val">Remettre G6 (dernière) + gel · récupérer G5 vide</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 100</strong> — Arrivée 🏁</span><span class="val">Récupérer G6 vide · le vélo peut franchir la ligne avec toi 🎉</span></div>
+        <div style="margin-top:8px;font-size:11px;color:#666;line-height:1.6">⚠️ Un seul vélo sur le circuit à la fois par coureur (relais possible entre plusieurs suiveurs). Rester derrière toi (ou prendre une nette avance), ne gêner aucun autre coureur, laisser la priorité à tout coureur au ravito. Vélo électrique autorisé, remorque/perche interdite, pas de musique. G0 est autoporté du départ jusqu'à Ailly-sur-Somme (km 19), avant l'arrivée du suiveur — plus besoin de bac de ravitaillement personnel, le suiveur est autorisé dès le km 15.</div>
       </div>
 
       <div class="nutri-card card-blue">
         <h4>🚴 Gourde de secours vélo (750 mL) — en option</h4>
         <div class="nutri-row"><span class="lbl">Contenu</span><span class="val">750 mL d'eau + 1 sachet Apurna neutre</span></div>
-        <div class="nutri-row"><span class="lbl">Portée par</span><span class="val">Le suiveur, une seule gourde pour toute la course (dès le km 16)</span></div>
+        <div class="nutri-row"><span class="lbl">Portée par</span><span class="val">Le suiveur, une seule gourde pour toute la course (dès le km 15)</span></div>
         <div class="nutri-row"><span class="lbl">Usage</span><span class="val">Facultatif — quelques gorgées à chaque rendez-vous si besoin (chaleur, crampes, coup de moins bien)</span></div>
         <div style="margin-top:8px;font-size:11px;color:#666;line-height:1.6">💡 Non comptée dans le bilan nutritionnel ci-dessus car sa consommation est variable et non planifiée. Si elle est bue en intégralité sur la journée, elle ajoute au maximum +500 mg de sodium (~+63 mg/h en moyenne) — un filet de sécurité au cas où le temps serait plus chaud que prévu ou en cas de crampes.</div>
       </div>
@@ -305,56 +306,56 @@ body.lang-en .legend .en-inline{display:inline !important}
         <div class="nutri-row"><span class="lbl">Eau</span><span class="val">500 mL (ajouter le matin)</span></div>
         <div class="nutri-row"><span class="lbl">Decathlon 1:0.8 Drink</span><span class="val">60 g (poudre)</span></div>
         <div class="nutri-row"><span class="lbl">Gel (remis séparément)</span><span class="val">1 gel Nutripure Longue Distance</span></div>
-        <div style="margin-top:8px;font-size:12px;color:#666;line-height:1.6">💡 Pas d'Apurna dans les gourdes G0-G6 : le sodium planifié vient uniquement de la boisson Decathlon 1:0.8 et du gel (~312 mg/h au total, adapté à une course fraîche). L'Apurna est réservé à la gourde de secours du vélo (voir ci-dessus). Préparer la poudre Decathlon 1:0.8 le vendredi. Ajouter l'eau fraîche le matin. Étiqueter G0 à G6 dans l'ordre. G0 est à prendre soi-même au départ ; G1 (km 15) via le bac de ravitaillement personnel (le suiveur ne rejoint qu'au km 16).</div>
+        <div style="margin-top:8px;font-size:12px;color:#666;line-height:1.6">💡 Pas d'Apurna dans les gourdes G0-G6 : le sodium planifié vient uniquement de la boisson Decathlon 1:0.8 et du gel (~312 mg/h au total, adapté à une course fraîche). L'Apurna est réservé à la gourde de secours du vélo (voir ci-dessus). Préparer la poudre Decathlon 1:0.8 le vendredi. Ajouter l'eau fraîche le matin. Étiqueter G0 à G6 dans l'ordre. G0 est à prendre soi-même au départ, jusqu'au premier échange à Ailly-sur-Somme (km 19).</div>
       </div>
 
-      <div class="section-title">🔄 Plan par segment (~15 km)</div>
+      <div class="section-title">🔄 Plan par segment (20 ravitos officiels, 6 échanges)</div>
       <div class="boucle-card" style="border-color:#888">
-        <h4 style="color:#555">🌙 Segment 0 — Départ dans la nuit — km 0 → 15</h4>
+        <h4 style="color:#555">🌙 Segment 0 — Départ dans la nuit — km 0 → 19,0 (Ailly-sur-Somme)</h4>
         <div class="boucle-item"><span class="pill">G0</span><span>Prendre gourde G0 au départ · boire progressivement par petites gorgées</span></div>
         <div class="boucle-item"><span class="pill orange">Gel</span><span>1 gel Nutripure LD · avaler progressivement sur 10-15 min en début de segment</span></div>
-        <div class="boucle-item"><span class="pill red">🔦 Frontale</span><span>Obligatoire — chemin de halage non éclairé avant le lever du jour (~8h00-8h15)</span></div>
+        <div class="boucle-item"><span class="pill red">🔦 Frontale</span><span>Obligatoire — chemin de halage non éclairé avant le lever du jour (~8h00-8h15). Ravitos intermédiaires : St Maurice (km 4,8 et 9,0), Halle (km 13,6)</span></div>
       </div>
       <div class="boucle-card">
-        <h4>➡️ Segment 1 (aller) — km 15 → 30</h4>
-        <div class="boucle-item"><span class="pill purple">🔀 Échange</span><span><strong>Ravito 3 (km 15)</strong> — récupérer G1 + gel via le bac de ravitaillement personnel (suiveur pas encore autorisé)</span></div>
-        <div class="boucle-item"><span class="pill">G1</span><span>Boire progressivement sur le segment</span></div>
+        <h4>➡️ Segment 1 (aller) — km 19,0 → 31,5 (Bourdon)</h4>
+        <div class="boucle-item"><span class="pill purple">🔀 Échange</span><span><strong>Ailly-sur-Somme (km 19,0)</strong> — récupérer G1 + gel auprès du suiveur, premier échange possible</span></div>
+        <div class="boucle-item"><span class="pill">G1</span><span>Boire progressivement · ravitos intermédiaires : Picquigny (km 24,3), Yzeux (km 27,8)</span></div>
         <div class="boucle-item"><span class="pill orange">Gel</span><span>1 gel Nutripure LD · en début de segment · jour levé, ranger la frontale</span></div>
       </div>
       <div class="boucle-card">
-        <h4>➡️ Segment 2 (aller) — km 30 → 45</h4>
-        <div class="boucle-item"><span class="pill purple">🔀 Échange</span><span><strong>Ravito 6 (km 30)</strong> — récupérer G2 + gel auprès du suiveur</span></div>
-        <div class="boucle-item"><span class="pill">G2</span><span>Boire progressivement · contrôle horaire km 35 (avant 12h00) en cours de segment</span></div>
+        <h4>➡️ Segment 2 (aller) — km 31,5 → 46,0 (Long)</h4>
+        <div class="boucle-item"><span class="pill purple">🔀 Échange</span><span><strong>Bourdon (km 31,5)</strong> — récupérer G2 + gel</span></div>
+        <div class="boucle-item"><span class="pill">G2</span><span>Boire progressivement · ravitos intermédiaires : Flixecourt (km 36,2), L'Étoile (km 41,2)</span></div>
         <div class="boucle-item"><span class="pill orange">Gel</span><span>1 gel Nutripure LD</span></div>
       </div>
       <div class="boucle-card" style="border-color:#EF9F27">
-        <h4 style="color:#7a4010">🔁 Segment 3 (aller + demi-tour) — km 45 → 60</h4>
-        <div class="boucle-item"><span class="pill purple">🔀 Échange</span><span><strong>Ravito 9 (km 45)</strong> — récupérer G3 + gel</span></div>
-        <div class="boucle-item"><span class="pill orange">G3</span><span>Boire progressivement · contrôle horaire km 56 (avant 15h00) puis demi-tour à Épagnette (km ~57)</span></div>
+        <h4 style="color:#7a4010">🔁 Segment 3 (aller + demi-tour) — km 46,0 → 62,2 (Pont-Rémy retour)</h4>
+        <div class="boucle-item"><span class="pill purple">🔀 Échange</span><span><strong>Long (km 46,0)</strong> — récupérer G3 + gel</span></div>
+        <div class="boucle-item"><span class="pill orange">G3</span><span>Boire progressivement · Pont-Rémy (km 51,4) puis demi-tour à Épagnette (km 56,8)</span></div>
         <div class="boucle-item"><span class="pill orange">Gel</span><span>1 gel Nutripure LD</span></div>
       </div>
       <div class="boucle-card">
-        <h4>⬅️ Segment 4 (retour) — km 60 → 75</h4>
-        <div class="boucle-item"><span class="pill purple">🔀 Échange</span><span><strong>Ravito 11 (km 60)</strong> — récupérer G4 + gel</span></div>
-        <div class="boucle-item"><span class="pill">G4</span><span>Boire progressivement · maintenir même si appétit réduit</span></div>
+        <h4>⬅️ Segment 4 (retour) — km 62,2 → 77,4 (Flixecourt retour)</h4>
+        <div class="boucle-item"><span class="pill purple">🔀 Échange</span><span><strong>Pont-Rémy retour (km 62,2)</strong> — récupérer G4 + gel</span></div>
+        <div class="boucle-item"><span class="pill">G4</span><span>Boire progressivement · maintenir même si appétit réduit · ravito intermédiaire : Long retour (km 67,6), L'Étoile retour (km 72,4)</span></div>
         <div class="boucle-item"><span class="pill orange">Gel</span><span>1 gel Nutripure LD</span></div>
       </div>
       <div class="boucle-card">
-        <h4>⬅️ Segment 5 (retour) — km 75 → 90</h4>
-        <div class="boucle-item"><span class="pill purple">🔀 Échange</span><span><strong>Ravito 14 (km 75)</strong> — récupérer G5 + gel · contrôle horaire km 77 (avant 18h00) juste après</span></div>
-        <div class="boucle-item"><span class="pill">G5</span><span>Boire progressivement · plus que 25 km !</span></div>
+        <h4>⬅️ Segment 5 (retour) — km 77,4 → 89,3 (Picquigny retour)</h4>
+        <div class="boucle-item"><span class="pill purple">🔀 Échange</span><span><strong>Flixecourt retour (km 77,4)</strong> — récupérer G5 + gel · plus que 23 km !</span></div>
+        <div class="boucle-item"><span class="pill">G5</span><span>Boire progressivement · ravito intermédiaire : Bourdon retour (km 82,1), Yzeux retour (km 85,8)</span></div>
         <div class="boucle-item"><span class="pill orange">Gel</span><span>1 gel Nutripure LD</span></div>
       </div>
       <div class="boucle-card" style="border-color:#EF9F27">
-        <h4 style="color:#7a4010">⬅️ Segment 6 (retour, dernier) — km 90 → 100</h4>
-        <div class="boucle-item"><span class="pill purple">🔀 Échange</span><span><strong>Ravito 17 (km 90)</strong> — récupérer G6 (dernière gourde) + gel · plus que 10 km !</span></div>
-        <div class="boucle-item"><span class="pill orange">G6</span><span>Boire jusqu'à l'arrivée · maintenir les glucides coûte que coûte</span></div>
+        <h4 style="color:#7a4010">⬅️ Segment 6 (retour, dernier) — km 89,3 → 100</h4>
+        <div class="boucle-item"><span class="pill purple">🔀 Échange</span><span><strong>Picquigny retour (km 89,3)</strong> — récupérer G6 (dernière gourde) + gel · plus que 11 km !</span></div>
+        <div class="boucle-item"><span class="pill orange">G6</span><span>Boire jusqu'à l'arrivée · maintenir les glucides coûte que coûte · dernier ravito : Ailly-sur-Somme retour (km 94,6)</span></div>
         <div class="boucle-item"><span class="pill orange">Gel</span><span>Dernier gel de la course</span></div>
       </div>
 
       <div class="section-title">🧪 Composition d'une gourde</div>
       <div class="nutri-card card-grey">
-        <h4>Par gourde 500 mL — apport par segment (~1h10-1h15 à 4:45/km, dernier segment plus court ~10 km)</h4>
+        <h4>Par gourde 500 mL — apport par segment (segments de 11 à 19 km, ~50 min à 1h30 à 4:45/km)</h4>
         <div class="nutri-row"><span class="lbl">60 g Decathlon 1:0.8 Drink</span><span class="val">58 g glucides · ~230 kcal · 300 mg Na · 34 mg Mg</span></div>
         <div class="nutri-row"><span class="lbl">1 gel Nutripure LD (séparé)</span><span class="val">30 g glucides · 120 kcal · 53 mg Na</span></div>
         <div class="nutri-row" style="border-top:2px solid #1D9E75;margin-top:4px;padding-top:8px;font-weight:700;color:#085041">
@@ -461,21 +462,22 @@ body.lang-en .legend .en-inline{display:inline !important}
       <div class="section-title">🚲 Logistics — Cycling follower ("suiveur")</div>
       <div class="nutri-card card-purple">
         <h4>Meeting points for your follower</h4>
-        <div class="nutri-row"><span class="lbl"><strong>km 15</strong> — Aid station 3 (no follower yet)</span><span class="val">Collect B1 via your personal aid bin · leave empty B0</span></div>
-        <div class="nutri-row"><span class="lbl"><strong>km 16</strong> — Official start point</span><span class="val">Follower may join the course by bike</span></div>
-        <div class="nutri-row"><span class="lbl"><strong>km 30</strong> — Aid station 6 🔀</span><span class="val">Hand over B2 + gel · collect empty B1</span></div>
-        <div class="nutri-row"><span class="lbl"><strong>km 45</strong> — Aid station 9 🔀</span><span class="val">Hand over B3 + gel · collect empty B2</span></div>
-        <div class="nutri-row"><span class="lbl"><strong>km 60</strong> — Aid station 11 🔀</span><span class="val">Hand over B4 + gel · collect empty B3</span></div>
-        <div class="nutri-row"><span class="lbl"><strong>km 75</strong> — Aid station 14 🔀</span><span class="val">Hand over B5 + gel · collect empty B4</span></div>
-        <div class="nutri-row"><span class="lbl"><strong>km 90</strong> — Aid station 17 🔀</span><span class="val">Hand over B6 (last) + gel · collect empty B5</span></div>
-        <div class="nutri-row"><span class="lbl"><strong>km 100</strong> — Finish 🏁</span><span class="val">Collect empty B6 🎉</span></div>
-        <div style="margin-top:8px;font-size:11px;color:#666;line-height:1.6">⚠️ Only one bike on the course at a time (multiple followers can take turns). Helmet recommended, phone advised. Do not shelter the runner. Aid station access is reserved for accredited followers (follower bib required). Since the follower isn't authorized until km 16, the km 15 handoff goes through the personal aid bin instead of the bike.</div>
+        <div class="nutri-row"><span class="lbl"><strong>km 15</strong> — Official start point</span><span class="val">Follower may join the course by bike (crossed-out follower bib on the front)</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 19.0</strong> — Ailly-sur-Somme 🔀</span><span class="val">Hand over B1 + gel · collect empty B0</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 31.5</strong> — Bourdon 🔀</span><span class="val">Hand over B2 + gel · collect empty B1</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 46.0</strong> — Long 🔀</span><span class="val">Hand over B3 + gel · collect empty B2</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 56.8</strong> — Épagnette</span><span class="val">Turnaround (no handoff here, just after at Pont-Rémy)</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 62.2</strong> — Pont-Rémy (return) 🔀</span><span class="val">Hand over B4 + gel · collect empty B3</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 77.4</strong> — Flixecourt (return) 🔀</span><span class="val">Hand over B5 + gel · collect empty B4</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 89.3</strong> — Picquigny (return) 🔀</span><span class="val">Hand over B6 (last) + gel · collect empty B5</span></div>
+        <div class="nutri-row"><span class="lbl"><strong>km 100</strong> — Finish 🏁</span><span class="val">Collect empty B6 · the bike may cross the line with you 🎉</span></div>
+        <div style="margin-top:8px;font-size:11px;color:#666;line-height:1.6">⚠️ Only one bike on the course at a time per runner (multiple followers can take turns). Stay behind you (or take a clear lead), don't interfere with any other runner, give priority to other runners at aid stations. E-bikes allowed, trailers/camera booms forbidden, no music. B0 is self-carried from the start through to Ailly-sur-Somme (km 19) before the follower arrives — no personal aid bin needed anymore, the follower is authorized from km 15.</div>
       </div>
 
       <div class="nutri-card card-blue">
         <h4>🚴 Backup bike bottle (750 mL) — optional</h4>
         <div class="nutri-row"><span class="lbl">Contents</span><span class="val">750 mL water + 1 Apurna neutral sachet</span></div>
-        <div class="nutri-row"><span class="lbl">Carried by</span><span class="val">The follower, one single bottle for the whole race (from km 16)</span></div>
+        <div class="nutri-row"><span class="lbl">Carried by</span><span class="val">The follower, one single bottle for the whole race (from km 15)</span></div>
         <div class="nutri-row"><span class="lbl">Usage</span><span class="val">Optional — a few sips at each meeting point if needed (heat, cramping, a rough patch)</span></div>
         <div style="margin-top:8px;font-size:11px;color:#666;line-height:1.6">💡 Not counted in the nutrition summary above since its consumption is variable and unplanned. If drunk entirely over the day, it adds at most +500 mg sodium (~+63 mg/h average) — a safety net in case the weather is warmer than expected or you get cramps.</div>
       </div>
@@ -486,56 +488,56 @@ body.lang-en .legend .en-inline{display:inline !important}
         <div class="nutri-row"><span class="lbl">Water</span><span class="val">500 mL (add on race morning)</span></div>
         <div class="nutri-row"><span class="lbl">Decathlon 1:0.8 Drink</span><span class="val">60 g (powder)</span></div>
         <div class="nutri-row"><span class="lbl">Gel (handed separately)</span><span class="val">1 Nutripure Long Distance gel</span></div>
-        <div style="margin-top:8px;font-size:12px;color:#666;line-height:1.6">💡 No Apurna in bottles B0-B6: planned sodium comes only from the Decathlon 1:0.8 drink and the gel (~312 mg/h total, suited to a cool race). Apurna is reserved for the backup bike bottle (see above). Pre-fill the Decathlon 1:0.8 powder on Friday. Add fresh water race morning. Label B0-B6 in order. B0 is self-carried from the start; B1 (km 15) goes through the personal aid bin (the follower only joins at km 16).</div>
+        <div style="margin-top:8px;font-size:12px;color:#666;line-height:1.6">💡 No Apurna in bottles B0-B6: planned sodium comes only from the Decathlon 1:0.8 drink and the gel (~312 mg/h total, suited to a cool race). Apurna is reserved for the backup bike bottle (see above). Pre-fill the Decathlon 1:0.8 powder on Friday. Add fresh water race morning. Label B0-B6 in order. B0 is self-carried from the start, all the way to the first handoff at Ailly-sur-Somme (km 19).</div>
       </div>
 
-      <div class="section-title">🔄 Segment-by-segment plan (~15 km)</div>
+      <div class="section-title">🔄 Segment-by-segment plan (20 official aid stations, 6 handoffs)</div>
       <div class="boucle-card" style="border-color:#888">
-        <h4 style="color:#555">🌙 Segment 0 — Start in the dark — km 0 → 15</h4>
+        <h4 style="color:#555">🌙 Segment 0 — Start in the dark — km 0 → 19.0 (Ailly-sur-Somme)</h4>
         <div class="boucle-item"><span class="pill">B0</span><span>Take bottle B0 at the start · sip steadily throughout</span></div>
         <div class="boucle-item"><span class="pill orange">Gel</span><span>1 Nutripure LD gel · take gradually over 10-15 min at the start of the segment</span></div>
-        <div class="boucle-item"><span class="pill red">🔦 Headlamp</span><span>Mandatory — unlit towpath before sunrise (~08:00-08:15)</span></div>
+        <div class="boucle-item"><span class="pill red">🔦 Headlamp</span><span>Mandatory — unlit towpath before sunrise (~08:00-08:15). Aid stations along the way: St Maurice (km 4.8 and 9.0), Halle (km 13.6)</span></div>
       </div>
       <div class="boucle-card">
-        <h4>➡️ Segment 1 (outbound) — km 15 → 30</h4>
-        <div class="boucle-item"><span class="pill purple">🔀 Handoff</span><span><strong>Aid station 3 (km 15)</strong> — collect B1 + gel via the personal aid bin (follower not yet authorized)</span></div>
-        <div class="boucle-item"><span class="pill">B1</span><span>Sip steadily throughout the segment</span></div>
+        <h4>➡️ Segment 1 (outbound) — km 19.0 → 31.5 (Bourdon)</h4>
+        <div class="boucle-item"><span class="pill purple">🔀 Handoff</span><span><strong>Ailly-sur-Somme (km 19.0)</strong> — collect B1 + gel from your follower, first possible handoff</span></div>
+        <div class="boucle-item"><span class="pill">B1</span><span>Sip steadily · aid stations along the way: Picquigny (km 24.3), Yzeux (km 27.8)</span></div>
         <div class="boucle-item"><span class="pill orange">Gel</span><span>1 Nutripure LD gel · at the start of the segment · daylight now, stow the headlamp</span></div>
       </div>
       <div class="boucle-card">
-        <h4>➡️ Segment 2 (outbound) — km 30 → 45</h4>
-        <div class="boucle-item"><span class="pill purple">🔀 Handoff</span><span><strong>Aid station 6 (km 30)</strong> — collect B2 + gel from your follower</span></div>
-        <div class="boucle-item"><span class="pill">B2</span><span>Sip steadily · time control at km 35 (before 12:00) along the way</span></div>
+        <h4>➡️ Segment 2 (outbound) — km 31.5 → 46.0 (Long)</h4>
+        <div class="boucle-item"><span class="pill purple">🔀 Handoff</span><span><strong>Bourdon (km 31.5)</strong> — collect B2 + gel</span></div>
+        <div class="boucle-item"><span class="pill">B2</span><span>Sip steadily · aid stations along the way: Flixecourt (km 36.2), L'Étoile (km 41.2)</span></div>
         <div class="boucle-item"><span class="pill orange">Gel</span><span>1 Nutripure LD gel</span></div>
       </div>
       <div class="boucle-card" style="border-color:#EF9F27">
-        <h4 style="color:#7a4010">🔁 Segment 3 (outbound + turnaround) — km 45 → 60</h4>
-        <div class="boucle-item"><span class="pill purple">🔀 Handoff</span><span><strong>Aid station 9 (km 45)</strong> — collect B3 + gel</span></div>
-        <div class="boucle-item"><span class="pill orange">B3</span><span>Sip steadily · time control at km 56 (before 15:00) then turnaround at Épagnette (km ~57)</span></div>
+        <h4 style="color:#7a4010">🔁 Segment 3 (outbound + turnaround) — km 46.0 → 62.2 (Pont-Rémy return)</h4>
+        <div class="boucle-item"><span class="pill purple">🔀 Handoff</span><span><strong>Long (km 46.0)</strong> — collect B3 + gel</span></div>
+        <div class="boucle-item"><span class="pill orange">B3</span><span>Sip steadily · Pont-Rémy (km 51.4) then turnaround at Épagnette (km 56.8)</span></div>
         <div class="boucle-item"><span class="pill orange">Gel</span><span>1 Nutripure LD gel</span></div>
       </div>
       <div class="boucle-card">
-        <h4>⬅️ Segment 4 (return) — km 60 → 75</h4>
-        <div class="boucle-item"><span class="pill purple">🔀 Handoff</span><span><strong>Aid station 11 (km 60)</strong> — collect B4 + gel</span></div>
-        <div class="boucle-item"><span class="pill">B4</span><span>Sip steadily · keep fuelling even if appetite drops</span></div>
+        <h4>⬅️ Segment 4 (return) — km 62.2 → 77.4 (Flixecourt return)</h4>
+        <div class="boucle-item"><span class="pill purple">🔀 Handoff</span><span><strong>Pont-Rémy return (km 62.2)</strong> — collect B4 + gel</span></div>
+        <div class="boucle-item"><span class="pill">B4</span><span>Sip steadily · keep fuelling even if appetite drops · aid stations along the way: Long return (km 67.6), L'Étoile return (km 72.4)</span></div>
         <div class="boucle-item"><span class="pill orange">Gel</span><span>1 Nutripure LD gel</span></div>
       </div>
       <div class="boucle-card">
-        <h4>⬅️ Segment 5 (return) — km 75 → 90</h4>
-        <div class="boucle-item"><span class="pill purple">🔀 Handoff</span><span><strong>Aid station 14 (km 75)</strong> — collect B5 + gel · time control at km 77 (before 18:00) right after</span></div>
-        <div class="boucle-item"><span class="pill">B5</span><span>Sip steadily · only 25 km left!</span></div>
+        <h4>⬅️ Segment 5 (return) — km 77.4 → 89.3 (Picquigny return)</h4>
+        <div class="boucle-item"><span class="pill purple">🔀 Handoff</span><span><strong>Flixecourt return (km 77.4)</strong> — collect B5 + gel · only 23 km left!</span></div>
+        <div class="boucle-item"><span class="pill">B5</span><span>Sip steadily · aid stations along the way: Bourdon return (km 82.1), Yzeux return (km 85.8)</span></div>
         <div class="boucle-item"><span class="pill orange">Gel</span><span>1 Nutripure LD gel</span></div>
       </div>
       <div class="boucle-card" style="border-color:#EF9F27">
-        <h4 style="color:#7a4010">⬅️ Segment 6 (return, final) — km 90 → 100</h4>
-        <div class="boucle-item"><span class="pill purple">🔀 Handoff</span><span><strong>Aid station 17 (km 90)</strong> — collect B6 (last bottle) + gel · only 10 km left!</span></div>
-        <div class="boucle-item"><span class="pill orange">B6</span><span>Drink through to the finish · keep carbs coming no matter what</span></div>
+        <h4 style="color:#7a4010">⬅️ Segment 6 (return, final) — km 89.3 → 100</h4>
+        <div class="boucle-item"><span class="pill purple">🔀 Handoff</span><span><strong>Picquigny return (km 89.3)</strong> — collect B6 (last bottle) + gel · only 11 km left!</span></div>
+        <div class="boucle-item"><span class="pill orange">B6</span><span>Drink through to the finish · keep carbs coming no matter what · last aid station: Ailly-sur-Somme return (km 94.6)</span></div>
         <div class="boucle-item"><span class="pill orange">Gel</span><span>Last gel of the race</span></div>
       </div>
 
       <div class="section-title">🧪 Bottle composition</div>
       <div class="nutri-card card-grey">
-        <h4>Per 500 mL bottle — per segment (~1h10-1h15 at 4:45/km, final segment shorter ~10 km)</h4>
+        <h4>Per 500 mL bottle — per segment (segments of 11 to 19 km, ~50 min to 1h30 at 4:45/km)</h4>
         <div class="nutri-row"><span class="lbl">60 g Decathlon 1:0.8 Drink</span><span class="val">58 g carbs · ~230 kcal · 300 mg Na · 34 mg Mg</span></div>
         <div class="nutri-row"><span class="lbl">1 Nutripure LD gel (separate)</span><span class="val">30 g carbs · 120 kcal · 53 mg Na</span></div>
         <div class="nutri-row" style="border-top:2px solid #1D9E75;margin-top:4px;padding-top:8px;font-weight:700;color:#085041">
@@ -695,15 +697,37 @@ body.lang-en .legend .en-inline{display:inline !important}
         <div class="nutri-row"><span class="lbl">Restauration</span><span class="val">Food-trucks sur place</span></div>
       </div>
 
-      <div class="section-title">🍽️ Ravitaillement</div>
+      <div class="section-title">🍽️ Ravitaillement — 20 points officiels</div>
       <div class="nutri-card card-grey">
-        <div class="nutri-row"><span class="lbl">Organisation</span><span class="val">Tous les ~5 km · boissons, sucré/salé, fruits secs et frais</span></div>
+        <div class="nutri-row"><span class="lbl">Emplacement</span><span class="val">Un ravito à chaque passage dans une commune (distances irrégulières, cf. Chrono/Carte)</span></div>
+        <div class="nutri-row"><span class="lbl">Chronométrage</span><span class="val">Détection dossard à chaque ravito (sauf Yzeux) · résultats live sur my.raceresult.com</span></div>
+        <div class="nutri-row"><span class="lbl">Bénévoles</span><span class="val">Chaque ravito est tenu par une association différente</span></div>
         <div class="nutri-row"><span class="lbl">Ravitaillement personnel</span><span class="val">Bacs étiquetés à déposer le vendredi 15h-20h · positionnés le samedi matin par point</span></div>
         <div class="nutri-row"><span class="lbl">Zones de ravito</span><span class="val">Ravitaillement autorisé sur l'ensemble du parcours</span></div>
       </div>
+      <div class="nutri-card card-orange">
+        <h4>🍌 Le menu</h4>
+        <div class="nutri-row"><span class="lbl">Boissons froides</span><span class="val">Eau plate (gobelets + bouteilles 50cl), eau gazeuse, cola</span></div>
+        <div class="nutri-row"><span class="lbl">Boissons chaudes</span><span class="val">Eau chaude : thé, café lyophilisé, soupe en sachets</span></div>
+        <div class="nutri-row"><span class="lbl">Sucré</span><span class="val">Sucre en morceaux, chocolat noir, quatre-quarts/marbré/pain d'épices, fruits secs (raisins, abricots, figues), fruits frais (bananes, oranges)</span></div>
+        <div class="nutri-row"><span class="lbl">Salé</span><span class="val">Cacahuètes salées, biscuits type TUC, fromage type Vache-qui-rit/Babybel</span></div>
+        <div style="margin-top:8px;font-size:11px;color:#666;line-height:1.5">💡 Merci de vider entièrement les bouteilles avant de les jeter dans les containers.</div>
+      </div>
 
-      <div class="section-title">🔦 Sécurité</div>
-      <div class="warning-box">Lampe frontale indispensable avant le lever du jour (chemin de halage non éclairé). Les coureurs en plus de 12h de course et leur suiveur doivent aussi prévoir une frontale pour la fin du parcours. Suiveurs invités à se munir d'un téléphone mobile ; port du casque vivement recommandé.</div>
+      <div class="section-title">🚲 Suiveurs vélo — règlement</div>
+      <div class="nutri-card card-purple">
+        <div class="nutri-row"><span class="lbl">Autorisation</span><span class="val">Facultatif · uniquement sur le 100 km · à partir du 15ème km</span></div>
+        <div class="nutri-row"><span class="lbl">Dossard</span><span class="val">Dossard suiveur barré, sur le devant du vélo (remis avec le dossard coureur)</span></div>
+        <div class="nutri-row"><span class="lbl">Position</span><span class="val">Rester derrière le coureur (ou prendre une nette avance) · ne gêner aucun autre coureur</span></div>
+        <div class="nutri-row"><span class="lbl">Au ravito</span><span class="val">Laisser la priorité à tout coureur · ne prendre que le nécessaire</span></div>
+        <div class="nutri-row"><span class="lbl">Relais</span><span class="val">Plusieurs suiveurs possibles à condition d'un seul vélo sur le circuit à la fois par concurrent</span></div>
+        <div class="nutri-row"><span class="lbl">Matériel</span><span class="val">Vélo électrique autorisé · remorque/perche de prise de vue interdite · pas de musique</span></div>
+        <div class="nutri-row"><span class="lbl">Arrivée</span><span class="val">Le vélo peut franchir la ligne avec le coureur, puis dégager rapidement l'aire d'arrivée</span></div>
+        <div style="margin-top:8px;font-size:11px;color:#666;line-height:1.5">⚠️ Tout comportement jugé anti-sportif du suiveur entraîne la disqualification du coureur suivi.</div>
+      </div>
+
+      <div class="section-title">🔦 Sécurité &amp; déchets</div>
+      <div class="warning-box">Lampe frontale indispensable avant le lever du jour (chemin de halage non éclairé). Les coureurs en plus de 12h de course et leur suiveur doivent aussi prévoir une frontale pour la fin du parcours. Suiveurs invités à se munir d'un téléphone mobile ; port du casque vivement recommandé.<br><br>🗑️ Tout déchet doit être ramassé, sous peine de disqualification. Les suiveurs peuvent aider en conservant les déchets du coureur jusqu'à l'arrivée.</div>
 
       <div class="section-title">🏆 Podium, primes &amp; records</div>
       <div class="nutri-card card-grey">
@@ -720,7 +744,7 @@ body.lang-en .legend .en-inline{display:inline !important}
         <div class="nutri-row"><span class="lbl">Date limite</span><span class="val">Dimanche 27 septembre 2026, 23h00</span></div>
         <div class="nutri-row"><span class="lbl">PPS</span><span class="val">Obligatoire pour les non-licenciés FFA compétition, valide au 3/10/26</span></div>
       </div>
-      <div class="info-box">Source : fiche officielle de la course (100kmdelasomme.com). Certaines informations (tracé GPX définitif, liste précise des ravitos) restent à confirmer par l'organisation avant la course — vérifie le site officiel à l'approche du 3 octobre.</div>
+      <div class="info-box">Sources : fiche officielle de la course et fiche « Points de ravitaillement » (100kmdelasomme.com), tracé GPX officiel (OpenRunner). Les horaires de ravito sont indicatifs (n'engagent que les coureurs) — vérifie le site officiel à l'approche du 3 octobre pour d'éventuelles mises à jour.</div>
     </div>
 
     <div class="en">
@@ -762,15 +786,37 @@ body.lang-en .legend .en-inline{display:inline !important}
         <div class="nutri-row"><span class="lbl">Food</span><span class="val">Food trucks on site</span></div>
       </div>
 
-      <div class="section-title">🍽️ Aid stations</div>
+      <div class="section-title">🍽️ Aid stations — 20 official checkpoints</div>
       <div class="nutri-card card-grey">
-        <div class="nutri-row"><span class="lbl">Organizer</span><span class="val">Every ~5 km · drinks, sweet/savoury food, dried and fresh fruit</span></div>
+        <div class="nutri-row"><span class="lbl">Location</span><span class="val">One aid station wherever the course passes through a village (irregular spacing, see Pace/Map)</span></div>
+        <div class="nutri-row"><span class="lbl">Timing</span><span class="val">Bib detection at every aid station (except Yzeux) · live results at my.raceresult.com</span></div>
+        <div class="nutri-row"><span class="lbl">Volunteers</span><span class="val">Each aid station is run by a different local association</span></div>
         <div class="nutri-row"><span class="lbl">Personal aid ("ravitaillement personnel")</span><span class="val">Labelled bins dropped off Friday 15:00-20:00 · placed Saturday morning per checkpoint</span></div>
         <div class="nutri-row"><span class="lbl">Aid zones</span><span class="val">Refuelling authorized along the whole course</span></div>
       </div>
+      <div class="nutri-card card-orange">
+        <h4>🍌 The menu</h4>
+        <div class="nutri-row"><span class="lbl">Cold drinks</span><span class="val">Still water (cups + 50cl bottles), sparkling water, cola</span></div>
+        <div class="nutri-row"><span class="lbl">Hot drinks</span><span class="val">Hot water: tea, instant coffee, packet soup</span></div>
+        <div class="nutri-row"><span class="lbl">Sweet</span><span class="val">Sugar cubes, dark chocolate, pound cake/marble cake/gingerbread, dried fruit (raisins, apricots, figs), fresh fruit (bananas, oranges)</span></div>
+        <div class="nutri-row"><span class="lbl">Savoury</span><span class="val">Salted peanuts, TUC-style crackers, Vache-qui-rit/Babybel-style cheese</span></div>
+        <div style="margin-top:8px;font-size:11px;color:#666;line-height:1.5">💡 Please empty bottles fully before dropping them in the containers.</div>
+      </div>
 
-      <div class="section-title">🔦 Safety</div>
-      <div class="warning-box">Headlamp mandatory before sunrise (unlit towpath). Runners over 12h and their follower must also carry a headlamp for the end of the course. Followers advised to carry a mobile phone; helmet strongly recommended.</div>
+      <div class="section-title">🚲 Cycling follower — rules</div>
+      <div class="nutri-card card-purple">
+        <div class="nutri-row"><span class="lbl">Authorization</span><span class="val">Optional · 100 km race only · from the 15th km</span></div>
+        <div class="nutri-row"><span class="lbl">Bib</span><span class="val">Crossed-out follower bib, on the front of the bike (handed out with the runner's bib)</span></div>
+        <div class="nutri-row"><span class="lbl">Position</span><span class="val">Stay behind the runner (or take a clear lead) · never interfere with another runner</span></div>
+        <div class="nutri-row"><span class="lbl">At aid stations</span><span class="val">Give priority to any runner · take only what's needed</span></div>
+        <div class="nutri-row"><span class="lbl">Relay</span><span class="val">Multiple followers allowed, as long as only one bike is on course per runner at any time</span></div>
+        <div class="nutri-row"><span class="lbl">Equipment</span><span class="val">E-bikes allowed · trailers/camera booms forbidden · no music</span></div>
+        <div class="nutri-row"><span class="lbl">Finish</span><span class="val">The bike may cross the finish line with the runner, then clear the finish area quickly</span></div>
+        <div style="margin-top:8px;font-size:11px;color:#666;line-height:1.5">⚠️ Any unsportsmanlike behaviour by the follower disqualifies the runner they're accompanying.</div>
+      </div>
+
+      <div class="section-title">🔦 Safety &amp; litter</div>
+      <div class="warning-box">Headlamp mandatory before sunrise (unlit towpath). Runners over 12h and their follower must also carry a headlamp for the end of the course. Followers advised to carry a mobile phone; helmet strongly recommended.<br><br>🗑️ All litter must be collected, under penalty of disqualification. Followers can help by keeping the runner's trash until the finish.</div>
 
       <div class="section-title">🏆 Podium, prizes &amp; records</div>
       <div class="nutri-card card-grey">
@@ -787,7 +833,7 @@ body.lang-en .legend .en-inline{display:inline !important}
         <div class="nutri-row"><span class="lbl">Deadline</span><span class="val">Sunday 27 September 2026, 23:00</span></div>
         <div class="nutri-row"><span class="lbl">PPS health form</span><span class="val">Required for non-FFA-competition-licensed runners, valid as of 3/10/26</span></div>
       </div>
-      <div class="info-box">Source: official race sheet (100kmdelasomme.com). Some details (final GPX track, exact aid station list) are still to be confirmed by the organizer before race day — check the official site closer to October 3.</div>
+      <div class="info-box">Sources: official race sheet and "Aid stations" sheet (100kmdelasomme.com), official GPX track (OpenRunner). Aid station times are indicative (only binding on runners) — check the official site closer to October 3 for any updates.</div>
     </div>
   </div>
 </div>
@@ -834,84 +880,78 @@ function latLonAtKm(km){
 // ALL POINTS
 // ============================================================
 const ALL_POINTS=[
-  {name:{fr:"Départ",en:"Start"},km:0,idx:0,color:"#555",type:"start",isCross:false,cutoff:null},
-  {name:{fr:"Ravito 1",en:"Aid station 1"},km:5,idx:1,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
-  {name:{fr:"Ravito 2",en:"Aid station 2"},km:10,idx:2,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
-  {name:{fr:"Contrôle horaire",en:"Time control"},km:14,idx:3,color:"#B42318",type:"cutoff",isCross:false,cutoff:"08:30"},
-  {name:{fr:"Ravito 3",en:"Aid station 3"},km:15,idx:4,color:"#7F77DD",type:"ravito",isCross:true,cutoff:null},
-  {name:{fr:"Ravito 4",en:"Aid station 4"},km:20,idx:5,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
-  {name:{fr:"Ravito 5",en:"Aid station 5"},km:25,idx:6,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
-  {name:{fr:"Ravito 6",en:"Aid station 6"},km:30,idx:7,color:"#7F77DD",type:"ravito",isCross:true,cutoff:null},
-  {name:{fr:"Ravito 7",en:"Aid station 7"},km:35,idx:8,color:"#1D9E75",type:"ravito",isCross:false,cutoff:"12:00"},
-  {name:{fr:"Ravito 8",en:"Aid station 8"},km:40,idx:9,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
-  {name:{fr:"Ravito 9",en:"Aid station 9"},km:45,idx:10,color:"#7F77DD",type:"ravito",isCross:true,cutoff:null},
-  {name:{fr:"Ravito 10",en:"Aid station 10"},km:55,idx:11,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
-  {name:{fr:"Contrôle horaire",en:"Time control"},km:56,idx:12,color:"#B42318",type:"cutoff",isCross:false,cutoff:"15:00"},
-  {name:{fr:"Demi-tour — Épagnette",en:"Turnaround — Épagnette"},km:57,idx:13,color:"#EF9F27",type:"turnaround",isCross:false,cutoff:null},
-  {name:{fr:"Ravito 11",en:"Aid station 11"},km:60,idx:14,color:"#7F77DD",type:"ravito",isCross:true,cutoff:null},
-  {name:{fr:"Ravito 12",en:"Aid station 12"},km:65,idx:15,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
-  {name:{fr:"Ravito 13",en:"Aid station 13"},km:70,idx:16,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
-  {name:{fr:"Ravito 14",en:"Aid station 14"},km:75,idx:17,color:"#7F77DD",type:"ravito",isCross:true,cutoff:null},
-  {name:{fr:"Contrôle horaire",en:"Time control"},km:77,idx:18,color:"#B42318",type:"cutoff",isCross:false,cutoff:"18:00"},
-  {name:{fr:"Ravito 15",en:"Aid station 15"},km:80,idx:19,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
-  {name:{fr:"Ravito 16",en:"Aid station 16"},km:85,idx:20,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
-  {name:{fr:"Ravito 17",en:"Aid station 17"},km:90,idx:21,color:"#7F77DD",type:"ravito",isCross:true,cutoff:null},
-  {name:{fr:"Ravito 18",en:"Aid station 18"},km:95,idx:22,color:"#1D9E75",type:"ravito",isCross:false,cutoff:null},
-  {name:{fr:"ARRIVÉE",en:"FINISH"},km:100.0,idx:23,color:"#378ADD",type:"finish",isCross:false,cutoff:null},
+  {name:{fr:"Départ",en:"Start"},km:0,lat:49.91988,lon:2.26284,color:"#555",type:"start",isCross:false,cutoff:"06:30"},
+  {name:{fr:"St Maurice (aller)",en:"St Maurice (outbound)"},km:4.8,lat:49.90152,lon:2.29516,color:"#1D9E75",type:"ravito",isCross:false,cutoff:"07:13"},
+  {name:{fr:"St Maurice (retour)",en:"St Maurice (return)"},km:9.0,lat:49.90152,lon:2.29516,color:"#1D9E75",type:"ravito",isCross:false,cutoff:"07:54"},
+  {name:{fr:"Halle",en:"Halle"},km:13.6,lat:49.92043,lon:2.26189,color:"#1D9E75",type:"ravito",isCross:false,cutoff:"08:32"},
+  {name:{fr:"Ailly-sur-Somme (aller)",en:"Ailly-sur-Somme (outbound)"},km:19.0,lat:49.92972,lon:2.20161,color:"#7F77DD",type:"ravito",isCross:true,cutoff:"09:21"},
+  {name:{fr:"Picquigny (aller)",en:"Picquigny (outbound)"},km:24.3,lat:49.94625,lon:2.14463,color:"#1D9E75",type:"ravito",isCross:false,cutoff:"10:08"},
+  {name:{fr:"Yzeux (aller)",en:"Yzeux (outbound)"},km:27.8,lat:49.96490,lon:2.21097,color:"#1D9E75",type:"ravito",isCross:false,cutoff:"10:40"},
+  {name:{fr:"Bourdon (aller)",en:"Bourdon (outbound)"},km:31.5,lat:49.98314,lon:2.07064,color:"#7F77DD",type:"ravito",isCross:true,cutoff:"11:13"},
+  {name:{fr:"Flixecourt (aller)",en:"Flixecourt (outbound)"},km:36.2,lat:50.00873,lon:2.07658,color:"#1D9E75",type:"ravito",isCross:false,cutoff:"11:55"},
+  {name:{fr:"L'Étoile (aller)",en:"L'Étoile (outbound)"},km:41.2,lat:50.02004,lon:2.02498,color:"#1D9E75",type:"ravito",isCross:false,cutoff:"12:40"},
+  {name:{fr:"Long (aller)",en:"Long (outbound)"},km:46.0,lat:50.03854,lon:1.96252,color:"#7F77DD",type:"ravito",isCross:true,cutoff:"13:24"},
+  {name:{fr:"Pont-Rémy (aller)",en:"Pont-Rémy (outbound)"},km:51.4,lat:50.05304,lon:1.90678,color:"#1D9E75",type:"ravito",isCross:false,cutoff:"14:12"},
+  {name:{fr:"Épagnette — Demi-tour",en:"Épagnette — Turnaround"},km:56.8,lat:50.07791,lon:1.85247,color:"#EF9F27",type:"turnaround",isCross:false,cutoff:"15:01"},
+  {name:{fr:"Pont-Rémy (retour)",en:"Pont-Rémy (return)"},km:62.2,lat:50.05304,lon:1.90678,color:"#7F77DD",type:"ravito",isCross:true,cutoff:"15:49"},
+  {name:{fr:"Long (retour)",en:"Long (return)"},km:67.6,lat:50.03854,lon:1.96252,color:"#1D9E75",type:"ravito",isCross:false,cutoff:"16:38"},
+  {name:{fr:"L'Étoile (retour)",en:"L'Étoile (return)"},km:72.4,lat:50.02004,lon:2.02498,color:"#1D9E75",type:"ravito",isCross:false,cutoff:"17:21"},
+  {name:{fr:"Flixecourt (retour)",en:"Flixecourt (return)"},km:77.4,lat:50.00873,lon:2.07658,color:"#7F77DD",type:"ravito",isCross:true,cutoff:"18:06"},
+  {name:{fr:"Bourdon (retour)",en:"Bourdon (return)"},km:82.1,lat:49.98314,lon:2.07064,color:"#1D9E75",type:"ravito",isCross:false,cutoff:"18:48"},
+  {name:{fr:"Yzeux (retour)",en:"Yzeux (return)"},km:85.8,lat:49.96490,lon:2.21097,color:"#1D9E75",type:"ravito",isCross:false,cutoff:"19:22"},
+  {name:{fr:"Picquigny (retour)",en:"Picquigny (return)"},km:89.3,lat:49.94625,lon:2.14463,color:"#7F77DD",type:"ravito",isCross:true,cutoff:"19:53"},
+  {name:{fr:"Ailly-sur-Somme (retour)",en:"Ailly-sur-Somme (return)"},km:94.6,lat:49.92972,lon:2.20161,color:"#1D9E75",type:"ravito",isCross:false,cutoff:"20:41"},
+  {name:{fr:"ARRIVÉE",en:"FINISH"},km:100.0,lat:49.92043,lon:2.26189,color:"#378ADD",type:"finish",isCross:false,cutoff:"21:30"},
 ];
 const SORTED=[...ALL_POINTS].sort((a,b)=>a.km-b.km);
 
 const NUTRI_ACTIONS={
   fr:{
     0:"🏁 Départ 6h30 — Prendre gourde G0 + gel Nutripure LD. Lampe frontale indispensable (nuit sur le chemin de halage).",
-    5:"Avaler le gel progressivement · boire G0 par petites gorgées",
-    10:"Continuer à boire G0",
-    14:"📍 Contrôle horaire — passage requis avant 8h30",
-    15:"🔀 ÉCHANGE — Remettre G0 vide · récupérer G1 (500 mL Decathlon 1:0.8) + gel. Suiveur vélo pas encore autorisé (dès km 16) : récupération via ton bac de ravitaillement personnel déposé la veille à ce point.",
-    20:"Avaler le gel progressivement · boire G1",
-    25:"Continuer à boire G1",
-    30:"🔀 ÉCHANGE (suiveur vélo) — Remettre G1 vide · récupérer G2 + gel",
-    35:"Avaler le gel progressivement · boire G2 · 📍 Contrôle horaire — passage requis avant 12h00",
-    40:"Continuer à boire G2",
-    45:"🔀 ÉCHANGE (suiveur vélo) — Remettre G2 vide · récupérer G3 + gel",
-    55:"Avaler le gel progressivement · boire G3",
-    56:"📍 Contrôle horaire — passage requis avant 15h00",
-    57:"🔁 Demi-tour à Épagnette — vérifier l'allure et repartir vers Amiens",
-    60:"🔀 ÉCHANGE (suiveur vélo) — Remettre G3 vide · récupérer G4 + gel",
-    65:"Avaler le gel progressivement · boire G4",
-    70:"Continuer à boire G4",
-    75:"🔀 ÉCHANGE (suiveur vélo) — Remettre G4 vide · récupérer G5 + gel",
-    77:"Avaler le gel progressivement · boire G5 · 📍 Contrôle horaire — passage requis avant 18h00 · plus que 23 km !",
-    80:"Continuer à boire G5",
-    85:"Continuer à boire G5 · plus que 15 km !",
-    90:"🔀 ÉCHANGE (suiveur vélo) — Remettre G5 vide · récupérer G6 (dernière gourde) + gel",
-    95:"Avaler le gel · boire G6 jusqu'à l'arrivée · maintenir les glucides coûte que coûte",
+    4.8:"Avaler le gel progressivement · boire G0 par petites gorgées",
+    9.0:"Continuer à boire G0",
+    13.6:"Continuer à boire G0 · jour qui se lève, tu peux bientôt ranger la frontale",
+    19.0:"🔀 ÉCHANGE (suiveur vélo, autorisé dès le km 15) — Remettre G0 vide · récupérer G1 (500 mL Decathlon 1:0.8) + gel",
+    24.3:"Avaler le gel progressivement · boire G1",
+    27.8:"Continuer à boire G1",
+    31.5:"🔀 ÉCHANGE (suiveur vélo) — Remettre G1 vide · récupérer G2 + gel",
+    36.2:"Avaler le gel progressivement · boire G2",
+    41.2:"Continuer à boire G2",
+    46.0:"🔀 ÉCHANGE (suiveur vélo) — Remettre G2 vide · récupérer G3 + gel",
+    51.4:"Avaler le gel progressivement · boire G3",
+    56.8:"🔁 Demi-tour à Épagnette — vérifier l'allure et repartir vers Amiens",
+    62.2:"🔀 ÉCHANGE (suiveur vélo) — Remettre G3 vide · récupérer G4 + gel",
+    67.6:"Avaler le gel progressivement · boire G4",
+    72.4:"Continuer à boire G4",
+    77.4:"🔀 ÉCHANGE (suiveur vélo) — Remettre G4 vide · récupérer G5 + gel · plus que 23 km !",
+    82.1:"Avaler le gel progressivement · boire G5",
+    85.8:"Continuer à boire G5 · plus que 14 km !",
+    89.3:"🔀 ÉCHANGE (suiveur vélo) — Remettre G5 vide · récupérer G6 (dernière gourde) + gel · plus que 11 km !",
+    94.6:"Avaler le gel · boire G6 jusqu'à l'arrivée · maintenir les glucides coûte que coûte",
     100.0:"🏁 ARRIVÉE — Félicitations !"
   },
   en:{
     0:"🏁 Start 06:30 — Take bottle B0 + Nutripure LD gel. Headlamp mandatory (dark on the towpath).",
-    5:"Take gel gradually · sip B0 steadily",
-    10:"Keep sipping B0",
-    14:"📍 Time control — must pass before 08:30",
-    15:"🔀 HANDOFF — Return empty B0 · collect B1 (500 mL Decathlon 1:0.8) + gel. Cyclist follower not yet authorized (from km 16): collect via your personal aid bin dropped off the day before at this point.",
-    20:"Take gel gradually · sip B1",
-    25:"Keep sipping B1",
-    30:"🔀 HANDOFF (cyclist follower) — Return empty B1 · collect B2 + gel",
-    35:"Take gel gradually · sip B2 · 📍 Time control — must pass before 12:00",
-    40:"Keep sipping B2",
-    45:"🔀 HANDOFF (cyclist follower) — Return empty B2 · collect B3 + gel",
-    55:"Take gel gradually · sip B3",
-    56:"📍 Time control — must pass before 15:00",
-    57:"🔁 Turnaround at Épagnette — check your pace and head back to Amiens",
-    60:"🔀 HANDOFF (cyclist follower) — Return empty B3 · collect B4 + gel",
-    65:"Take gel gradually · sip B4",
-    70:"Keep sipping B4",
-    75:"🔀 HANDOFF (cyclist follower) — Return empty B4 · collect B5 + gel",
-    77:"Take gel gradually · sip B5 · 📍 Time control — must pass before 18:00 · only 23 km left!",
-    80:"Keep sipping B5",
-    85:"Keep sipping B5 · only 15 km left!",
-    90:"🔀 HANDOFF (cyclist follower) — Return empty B5 · collect B6 (last bottle) + gel",
-    95:"Take gel · sip B6 to the finish · keep carbs coming no matter what",
+    4.8:"Take gel gradually · sip B0 steadily",
+    9.0:"Keep sipping B0",
+    13.6:"Keep sipping B0 · daylight is coming, you can soon stow the headlamp",
+    19.0:"🔀 HANDOFF (cyclist follower, authorized from km 15) — Return empty B0 · collect B1 (500 mL Decathlon 1:0.8) + gel",
+    24.3:"Take gel gradually · sip B1",
+    27.8:"Keep sipping B1",
+    31.5:"🔀 HANDOFF (cyclist follower) — Return empty B1 · collect B2 + gel",
+    36.2:"Take gel gradually · sip B2",
+    41.2:"Keep sipping B2",
+    46.0:"🔀 HANDOFF (cyclist follower) — Return empty B2 · collect B3 + gel",
+    51.4:"Take gel gradually · sip B3",
+    56.8:"🔁 Turnaround at Épagnette — check your pace and head back to Amiens",
+    62.2:"🔀 HANDOFF (cyclist follower) — Return empty B3 · collect B4 + gel",
+    67.6:"Take gel gradually · sip B4",
+    72.4:"Keep sipping B4",
+    77.4:"🔀 HANDOFF (cyclist follower) — Return empty B4 · collect B5 + gel · only 23 km left!",
+    82.1:"Take gel gradually · sip B5",
+    85.8:"Keep sipping B5 · only 14 km left!",
+    89.3:"🔀 HANDOFF (cyclist follower) — Return empty B5 · collect B6 (last bottle) + gel · only 11 km left!",
+    94.6:"Take gel · sip B6 to the finish · keep carbs coming no matter what",
     100.0:"🏁 FINISH — Congratulations!"
   }
 };
@@ -979,16 +1019,15 @@ function initMap(){
   function addArrows(pts,color){const step=Math.max(1,Math.floor(pts.length/24));for(let i=step;i<pts.length-1;i+=step){const a=pts[i-1],b=pts[i];const angle=Math.atan2(b[1]-a[1],b[0]-a[0])*180/Math.PI;L.marker([b[0],b[1]],{icon:L.divIcon({className:'',html:`<div style="transform:rotate(${angle-90}deg);color:${color};font-size:13px;opacity:.55">▶</div>`,iconSize:[13,13],iconAnchor:[6,6]}),interactive:false}).addTo(leafletMap)}}
   addArrows(GPX_TRACK,'#1D9E75');
   function mkIcon(html,size,anchor){return L.divIcon({className:'',html,iconSize:size,iconAnchor:anchor||[size[0]/2,size[1]/2]})}
-  const startLL=latLonAtKm(0);
+  const startLL=[ALL_POINTS[0].lat,ALL_POINTS[0].lon];
   L.marker(startLL,{icon:mkIcon(`<div style="background:#555;color:white;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;border:2px solid white;box-shadow:0 1px 5px rgba(0,0,0,.4)">S</div>`,[22,22])}).bindPopup('<b>🏁 Départ / Start · Arrivée / Finish</b><br>Parc du Grand Marais, Amiens · 06:30').addTo(leafletMap);
   const turn=SORTED.find(r=>r.type==='turnaround');
   if(turn){
-    const tll=latLonAtKm(turn.km);
-    L.marker(tll,{icon:mkIcon(`<div style="background:#EF9F27;border-radius:50%;width:16px;height:16px;border:3px solid white;box-shadow:0 0 0 2px #EF9F27,0 2px 6px rgba(0,0,0,.35)"></div>`,[16,16])}).bindPopup(`<b>🔁 ${getName(turn)}</b><br><small>km ${turn.km}</small>`).addTo(leafletMap);
+    L.marker([turn.lat,turn.lon],{icon:mkIcon(`<div style="background:#EF9F27;border-radius:50%;width:16px;height:16px;border:3px solid white;box-shadow:0 0 0 2px #EF9F27,0 2px 6px rgba(0,0,0,.35)"></div>`,[16,16])}).bindPopup(`<b>🔁 ${getName(turn)}</b><br><small>km ${turn.km}</small>`).addTo(leafletMap);
   }
   SORTED.forEach(r=>{
     if(r.type!=='ravito')return;
-    const ll=latLonAtKm(r.km);
+    const ll=[r.lat,r.lon];
     if(r.isCross){
       L.marker(ll,{icon:mkIcon(`<div style="width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-bottom:16px solid #7F77DD;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4))"></div>`,[18,16],[9,16])}).bindPopup(`<b>🔀 ${getName(r)}</b><br><small>km ${r.km} — ${currentLang==='fr'?'Échange gourde suiveur':'Bottle handoff'}</small>`).addTo(leafletMap);
     }else{
